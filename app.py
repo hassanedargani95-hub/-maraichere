@@ -5,7 +5,7 @@ import pandas as pd
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # ==========================================
-# DESIGN SYSTEM PRESTIGE (CSS)
+# DESIGN SYSTEM PRESTIGE (CSS CORRIGÉ POUR PYTHON 3.14)
 # ==========================================
 st.markdown("""
     <style>
@@ -25,7 +25,7 @@ st.markdown("""
         .stTabs [data-baseweb="tab"] { color: #1E5631; font-weight: 600; border-radius: 8px; padding: 10px 15px; font-size: 14px; }
         .stTabs [data-baseweb="tab"][aria-selected="true"] { background-color: #1E5631 !important; color: white !important; }
     </style>
-""", unsafe_allowed_html=True)
+""", unsafe_allow_html=True) # <-- CORRECTION ICI
 
 # ==========================================
 # BASE DE DONNÉES ENCYCLOPÉDIQUE ET AGROBUSINESS
@@ -87,19 +87,18 @@ base_cultures = {
     }
 }
 
-# Images d'illustration agronomiques universelles (Libres de droits)
 images_etapes = {
-    "pepiniere": "https://unsplash.com", # Jeunes pousses vertes
-    "repiquage": "https://unsplash.com", # Plantation en terre
-    "entretien": "https://unsplash.com", # Potager entretenu/paillé
-    "recolte": "https://unsplash.com"     # Légumes récoltés frais
+    "pepiniere": "https://unsplash.com",
+    "repiquage": "https://unsplash.com",
+    "entretien": "https://unsplash.com",
+    "recolte": "https://unsplash.com"
 }
 
 # ==========================================
-# INTERFACE DE L'APPLICATION SMARTPHONE
+# INTERFACE DE L'APPLICATION
 # ==========================================
-st.markdown("<h1>📖 La Bible Maraîchère PRO</h1>", unsafe_allowed_html=True)
-st.markdown("<p style='text-align: center; color: #666; font-style: italic;'>L'outil intégral de l'agriculteur moderne connecté</p>", unsafe_allowed_html=True)
+st.markdown("<h1>📖 La Bible Maraîchère PRO</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666; font-style: italic;'>L'outil intégral de l'agriculteur moderne connecté</p>", unsafe_allow_html=True)
 
 onglet = st.tabs(["📸 Scanner IA", "🌿 Associations", "🚜 Guide en Images", "🏭 Agrobusiness", "💰 Budget"])
 
@@ -107,7 +106,7 @@ onglet = st.tabs(["📸 Scanner IA", "🌿 Associations", "🚜 Guide en Images"
 # ONGLET 3 : LE GUIDE DE CULTURE EN IMAGES
 # ------------------------------------------
 with onglet[2]:
-    st.markdown('<div class="card"><h3>🚜 Guide Visuel Étape par Étape</h3>Suivez les repères en images pour réussir chaque phase de votre culture.</div>', unsafe_allowed_html=True)
+    st.markdown('<div class="card"><h3>🚜 Guide Visuel Étape par Étape</h3>Suivez les repères en images pour réussir chaque phase de votre culture.</div>', unsafe_allow_html=True)
     culture_visuelle = st.selectbox("Sélectionnez la plante à suivre :", list(base_cultures.keys()), key="visuel_sel")
     
     if culture_visuelle:
@@ -126,26 +125,26 @@ with onglet[2]:
         col3, col4 = st.columns(2)
         with col3:
             st.image(images_etapes["entretien"], caption="✂️ Étape 3 : Entretien et Paillage", use_container_width=True)
-            st.write("Désherbage régulier, maintien du paillage organique pour garder l'humidité et tuteurage si nécessaire.")
+            st.write("Désherbage régulier, maintien du paillage organique pour garder l'humidité.")
         with col4:
             st.image(images_etapes["recolte"], caption="🧺 Étape 4 : Récolte et Maturité", use_container_width=True)
             st.write(f"Cueillette au stade optimal. Rendement attendu : **{c_data['rendement_base']} kg** par unité.")
 
 # ------------------------------------------
-# ONGLET 4 : NOUVEAU MODULE AGROBUSINESS (CONSERVATION / TRANSFORMATION)
+# ONGLET 4 : MODULE AGROBUSINESS
 # ------------------------------------------
 with onglet[3]:
-    st.markdown('<div class="card"><h3>🏭 Volet Agrobusiness & Valeur Ajoutée</h3>Ne bradez plus vos récoltes en période de surproduction. Maîtrisez le stockage et créez des produits transformés.</div>', unsafe_allowed_html=True)
+    st.markdown('<div class="card"><h3>🏭 Volet Agrobusiness & Valeur Ajoutée</h3>Maîtrisez le stockage et créez des produits transformés.</div>', unsafe_allow_html=True)
     culture_biz = st.selectbox("Sélectionnez une culture pour l'agrobusiness :", list(base_cultures.keys()), key="biz_sel")
     
     if culture_biz:
         cb = base_cultures[culture_biz]
         st.markdown(f"## 🏭 Valorisation industrielle : {culture_biz}")
         
-        st.markdown('<div class="business-box"><b>🧊 Méthodes de Conservation Spécifiques :</b><br>' + cb["conservation"] + '</div>', unsafe_allowed_html=True)
-        st.markdown('<div class="business-box" style="border-left-color: #2E7D32; background-color: #EBF7EE; color: #2E7D32;"><b>🍯 Procédés de Transformation Locale :</b><br>' + cb["transformation"] + '</div>', unsafe_allowed_html=True)
+        st.markdown('<div class="business-box"><b>🧊 Méthodes de Conservation Spécifiques :</b><br>' + cb["conservation"] + '</div>', unsafe_allow_html=True)
+        st.markdown('<div class="business-box" style="border-left-color: #2E7D32; background-color: #EBF7EE; color: #2E7D32;"><b>🍯 Procédés de Transformation Locale :</b><br>' + cb["transformation"] + '</div>', unsafe_allow_html=True)
 
-# (Les autres modules restent actifs et connectés en arrière-plan)
+# Notifications pour les autres onglets
 with onglet[0]:
     st.info("📸 Module Scanner IA actif. Importez une photo pour l'analyse en ligne.")
 with onglet[1]:
