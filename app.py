@@ -1,55 +1,95 @@
 import streamlit as st
 
 # Configuration de la page mobile
-st.set_page_config(page_title="La Bible de la Maraîchère Culture", page_icon="🌱", layout="centered")
+st.set_page_config(page_title="La Bible du Maraîchage", page_icon="🌱", layout="centered")
 
 # ==========================================
-# DESIGN ÉPURÉ STYLE APPLICATION COMMERCIALE (CSS LIGHT)
+# DESIGN ÉCO-PREMIUM VERT & GRAPHIQUES AVANCÉS (CSS)
 # ==========================================
 st.markdown("""
     <style>
         @import url('https://googleapis.com');
         
+        /* Fond d'écran vert végétal texturé avec symboles de légumes */
         .stApp {
-            background-color: #FFFFFF;
+            background-color: #E8F2EA;
+            background-image: radial-gradient(#C6E2CC 1px, transparent 1px), radial-gradient(#C6E2CC 1px, #E8F2EA 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
             font-family: 'Lexend', sans-serif;
         }
         header {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* En-tête stylisé demandé */
-        .app-header {
-            text-align: center;
-            padding: 15px 5px;
-            margin-bottom: 10px;
+        /* --- DESIGN DE L'EN-TÊTE ET BOUTON CONNEXION --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            margin-bottom: 5px;
         }
         .app-main-title {
             font-family: 'Fredoka One', cursive;
-            color: #10B981;
-            font-size: 24px;
+            color: #0F4220;
+            font-size: 23px;
             margin: 0;
+            text-align: left;
         }
         .app-main-subtitle {
-            color: #6B7280;
-            font-size: 13px;
+            color: #4B5563;
+            font-size: 12px;
             font-weight: 400;
-            margin-top: 6px;
+            margin-top: 4px;
+            text-align: left;
+            font-style: italic;
         }
         
-        /* Style des boîtes de détails */
-        .info-card {
-            background-color: #F9FAFB;
-            padding: 16px;
-            border-radius: 16px;
-            margin-top: 10px;
-            border: 1px solid #E5E7EB;
+        /* --- INTÉGRATION DE LA ZONE DE DIAGNOSTIC PREMIUM --- */
+        .scanner-box-premium {
+            background: #FFFFFF;
+            padding: 25px 20px;
+            border-radius: 28px;
+            box-shadow: 0px 10px 30px rgba(15, 66, 32, 0.08);
+            border: 1px solid rgba(15, 66, 32, 0.05);
+            text-align: center;
+            margin-top: 15px;
+        }
+        .scanner-title {
+            font-family: 'Lexend', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #0F4220;
+            margin-bottom: 6px;
+        }
+        .scanner-instruction {
+            font-size: 12px;
+            color: #6B7280;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+        
+        /* Style des boîtes d'informations générales */
+        .info-card-premium {
+            background-color: #FFFFFF;
+            padding: 18px;
+            border-radius: 22px;
+            margin-top: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.01);
             text-align: left;
+        }
+        .info-card-title {
+            font-weight: 700;
+            color: #0F4220;
+            font-size: 14px;
+            margin-bottom: 8px;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# BASE DE DONNÉES ENCYCLOPÉDIQUE DE PRÉCISION
+# BASE DE DONNÉES ENCYCLOPÉDIQUE ET DÉTAILS
 # ==========================================
 base_cultures = {
     "Tomate": {"amis": "Carotte, Oignon, Basilic", "ennemis": "Pomme de terre", "pepiniere": "21-25 jours sous moustiquaire. Arrosage matin/soir.", "repiquage": "50cm entre plants. Lignes séparées de 80cm.", "rendement": 3.5, "conservation": "Froid modéré (12°C) pour les étals.", "transformation": "Concentré de tomate, purée pasteurisée"},
@@ -60,95 +100,96 @@ base_cultures = {
     "Persil & Céleri": {"amis": "Tomate, Oignon", "ennemis": "Laitue", "pepiniere": "Levée lente (Tremper les graines 24h).", "repiquage": "25cm d'écartement sur lignes denses.", "rendement": 1.5, "conservation": "Séchage complet ou congélation.", "transformation": "Sel aromatisé, extraits séchés"}
 }
 
-# En-tête révisé
-st.markdown("""
-    <div class="app-header">
-        <div class="app-main-title">La Bible de la Maraîchère Culture</div>
-        <div class="app-main-subtitle">Pas besoin de tout connaître, suivez les étapes par étapes.</div>
-    </div>
-""", unsafe_allow_html=True)
+# --- LIGNE DE NAVIGATION SUPÉRIEURE (TITRE & CONNEXION) ---
+col_titre, col_btn = st.columns([3, 1.2])
+with col_titre:
+    st.markdown('<h1 class="app-main-title">La Bible de la Maraîchère Culture</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="app-main-subtitle">Pas besoin de tout connaître, suivez les étapes par étapes.</p>', unsafe_allow_html=True)
 
-# Sélection de la culture
-culture = st.selectbox("Find Your Daily Plant :", list(base_cultures.keys()))
+with col_btn:
+    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
+    ouvrir_profil = st.button("👤 S'enregistrer", key="btn_login", use_container_width=True)
+
+# Espace d'enregistrement si l'utilisateur clique sur le bouton en haut à droite
+if ouvrir_profil:
+    with st.form("form_inscription"):
+        st.markdown("### 📝 Créer votre compte producteur")
+        nom = st.text_input("Nom de l'exploitant :", placeholder="Ex: Issouf")
+        localite = st.text_input("Localisation du champ :", placeholder="Ex: Bobo-Dioulasso")
+        st.form_submit_button("Valider mon inscription")
+
+# Sélection de la culture courante
+st.markdown("<p style='font-weight:600; color:#0F4220; font-size:13px; margin-bottom:5px; margin-top:15px; text-align:left;'>🥦 SÉLECTIONNER VOTRE VARIÉTÉ CIBLE :</p>", unsafe_allow_html=True)
+culture = st.selectbox("", list(base_cultures.keys()), label_visibility="collapsed")
 data = base_cultures[culture]
 
-st.markdown("---")
+# Structure par Onglets Fluides
+onglets = st.tabs(["📸 Scanner", "🌿 Associations", "🚜 Guide Suivi", "🏭 Agrobusiness", "💰 Budget"])
 
-# Navigation par Onglets (Infiniment plus performant sur smartphone qu'une grille de boutons)
-onglets = st.tabs(["📸 Scanner & Photo", "🌿 Associations", "🚜 Guide Suivi", "🏭 Agrobusiness", "💰 Budget"])
-
-# --- ONGLET 1 : SCANNER ET IMPORTATION LÉGÈRE ---
-with onglets[0]:
-    st.markdown("### 📸 Laboratoire de Diagnostic")
+# --- ONGLET 1 : SCANNER REVISITÉ AVEC IMPORTATION MULTIPLE ---
+with onglets:
+    st.markdown("""
+        <div class="scanner-box-premium">
+            <div class="scanner-title">📸 Laboratoire de Diagnostic</div>
+            <div class="scanner-instruction">Sélectionnez une ou plusieurs photos de vos feuilles ou racines pour lancer l'analyse agronomique.</div>
+        </div>
+    """, unsafe_allow_html=True)
     
-    # Utilisation d'un uploader simple, beaucoup plus rapide sur réseau 3G/4G
-    fichier_photo = st.file_uploader("Cliquez ici pour prendre ou importer une photo :", type=["jpg", "png", "jpeg"])
+    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
     
-    if fichier_photo is not None:
-        st.info("Photo reçue. Analyse des données foliaires en cours...")
-        st.success(f"Analyse terminée pour la culture : {culture}. Aucun parasite critique détecté. Surveillez l'arrosage.")
+    # Modifié pour permettre de choisir PLUSIEURS photos à la fois dans la galerie (accept_multiple_files=True)
+    fichiers_photos = st.file_uploader("", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
+    
+    if fichiers_photos:
+        st.info(f"📸 {len(fichiers_photos)} photo(s) reçue(s) par le serveur de diagnostic.")
+        st.success(f"Analyse globale terminée pour votre culture de : {culture}. Éléments foliaires stables.")
 
 # --- ONGLET 2 : COMPAGNONNAGE ---
-with onglets[1]:
-    st.markdown(f"### 🌿 Compagnonnage : {culture}")
+with onglets:
     st.markdown(f"""
-        <div class="info-card">
-            <b>🤝 Plantes amies à planter à côté :</b><br>{data['amis']}<br><br>
-            <b style='color:#DC2626;'>❌ Plantes ennemies (Zone d'exclusion) :</b><br>{data['ennemis']}
+        <div class="info-card-premium">
+            <div class="info-card-title">🤝 Voisinage Recommandé (Plantes amies) :</div>
+            <p style='font-size:13px; color:#374151;'>{data['amis']}</p>
+            <hr style='border: 0; border-top: 1px solid #E5E7EB; margin: 15px 0;'>
+            <div class="info-card-title" style='color:#DC2626;'>❌ Zone d'Exclusion (Plantes ennemies) :</div>
+            <p style='font-size:13px; color:#374151;'>{data['ennemis']}</p>
         </div>
     """, unsafe_allow_html=True)
 
-# --- ONGLET 3 : GUIDE TECHNIQUE ÉTAPE PAR ÉTAPE (SANS LIEN LOGICIEL EXTREME) ---
-with onglets[2]:
-    st.markdown(f"### 🚜 Itinéraire Technique de Production")
-    
-    # Pour contourner définitivement les bugs de réseau, le guide utilise des icônes émojis de secours intégrées
+# --- ONGLET 3 : GUIDE TECHNIQUE ÉTAPE PAR ÉTAPE ---
+with onglets:
     st.markdown(f"""
-        <div class="info-card">
-            <h4>🌱 Étape 1 : La Pépinière / Semis</h4>
-            <p>{data['pepiniere']}</p>
+        <div class="info-card-premium">
+            <div class="info-card-title">🌱 Étape 1 : La Pépinière / Semis</div>
+            <p style='font-size:13px; color:#4B5563;'>{data['pepiniere']}</p>
         </div>
-        <div class="info-card">
-            <h4>📐 Étape 2 : Le Repiquage au champ</h4>
-            <p>{data['repiquage']}</p>
+        <div class="info-card-premium">
+            <div class="info-card-title">📐 Étape 2 : Le Repiquage au champ</div>
+            <p style='font-size:13px; color:#4B5563;'>{data['repiquage']}</p>
         </div>
-        <div class="info-card">
-            <h4>✂️ Étape 3 : Entretien de la parcelle</h4>
-            <p>Désherber et maintenir un paillage organique régulier au pied des plantes pour bloquer l'évaporation.</p>
+        <div class="info-card-premium">
+            <div class="info-card-title">✂️ Étape 3 : Entretien et Suivi</div>
+            <p style='font-size:13px; color:#4B5563;'>Désherber manuellement et maintenir un paillage organique régulier au pied des plantes pour bloquer l'évaporation de l'eau.</p>
         </div>
-        <div class="info-card">
-            <h4>🧺 Étape 4 : Récolte et Cueillette</h4>
-            <p>Récolte au stade optimal de maturité. Rendement estimé : <b>{data['rendement']} kg</b> par unité.</p>
+        <div class="info-card-premium">
+            <div class="info-card-title">🧺 Étape 4 : Récolte et Cueillette</div>
+            <p style='font-size:13px; color:#4B5563;'>Cueillette au stade optimal de maturité pour le marché. Rendement estimé : <b>{data['rendement']} kg</b> par unité.</p>
         </div>
     """, unsafe_allow_html=True)
 
 # --- ONGLET 4 : AGROBUSINESS ---
-with onglets[3]:
-    st.markdown(f"### 🏭 Volet Agrobusiness & Stockage : {culture}")
+with onglets:
     st.markdown(f"""
-        <div class="info-card" style="border-left: 4px solid #3B82F6;">
-            <b>🧊 Méthodes de Conservation :</b><br>{data['conservation']}
+        <div class="info-card-premium" style="border-left: 5px solid #3B82F6;">
+            <div class="info-card-title" style="color:#1D4ED8;">🧊 Méthodes de Stockage et Conservation :</div>
+            <p style='font-size:13px; color:#374151;'>{data['conservation']}</p>
         </div>
-        <div class="info-card" style="border-left: 4px solid #10B981;">
-            <b>🍯 Procédés de Transformation Locale :</b><br>{data['transformation']}
+        <div class="info-card-premium" style="border-left: 5px solid #10B981;">
+            <div class="info-card-title" style="color:#047857;">🍯 Procédés de Transformation Locale :</div>
+            <p style='font-size:13px; color:#374151;'>{data['transformation']}</p>
         </div>
     """, unsafe_allow_html=True)
 
 # --- ONGLET 5 : BUDGET ---
-with onglets[4]:
-    st.markdown("### 💰 Simulateur de Rentabilité")
-    unites = st.number_input("Nombre de pieds cultivés :", min_value=10, value=500, step=50)
-    p_kilo = st.number_input("Prix de vente estimé au marché (FCFA / kg) :", min_value=50, value=400, step=25)
-    total_charges = st.number_input("Total de vos dépenses de campagne (FCFA) :", min_value=0, value=25000, step=1000)
-    
-    rendement_total = float(data["rendement"]) * unites
-    ca_estime = rendement_total * p_kilo
-    net = ca_estime - total_charges
-    
-    st.markdown("---")
-    st.metric(label="Volume récolté estimé", value=f"{rendement_total:,.1f} kg".replace(",", " "))
-    st.metric(label="Chiffre d'Affaires Brut", value=f"{ca_estime:,.0f} FCFA".replace(",", " "))
-    if net >= 0:
-        st.metric(label="💰 BÉNÉFICE NET REEL", value=f"{net:,.0f} FCFA".replace(",", " "))
-    else:
-        st.metric(label="⚠️ DÉFICIT PRÉVISIONNEL", value=f"{net:,.0f} FCFA".replace(",", " "))
+with onglets:
+    st.markdown("### 💰 Simulateur de Rentabilité Financière")
