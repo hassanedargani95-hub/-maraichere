@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Configuration de la page mobile Premium
-st.set_page_config(page_title="La Bible de la Maraîchère Culture", page_icon="📖", layout="centered")
+st.set_page_config(page_title="La Bible du Maraîchage", page_icon="📖", layout="centered")
 
 # ==========================================
 # DESIGN SYSTEM PRESTIGE (CORRECTIF DESIGN HORIZONTAL & POLICES)
@@ -134,7 +134,7 @@ base_cultures = {
     "Persil & Céleri": {"amis": "Tomate, Oignon", "ennemis": "Laitue", "pepiniere": "Levée lente (Tremper les graines 24h).", "repiquage": "25cm d'écartement sur lignes denses.", "rendement": 1.5, "conservation": "Séchage complet ou congélation.", "transformation": "Sel aromatisé, extraits séchés"}
 }
 
-# Serveur d'images CDN Securisé (Unsplash Source Directe Haute Vitesse)
+# Liens d'images directes ultra-rapides et légères
 images_verticales = {
     "pepiniere": "https://unsplash.com",
     "repiquage": "https://unsplash.com",
@@ -159,7 +159,7 @@ culture = st.selectbox("", list(base_cultures.keys()), label_visibility="collaps
 
 data = base_cultures[culture]
 
-# --- MODULE 1 : SCANNER (ALIGNEMENT HORIZONTAL) ---
+# --- MODULE 1 : SCANNER ---
 st.markdown(f"""
     <div class="app-menu-card">
         <div class="card-left">
@@ -195,7 +195,7 @@ st.markdown(f"""
 with st.expander("Consulter les alertes de voisinage"):
     st.error(f"❌ Zone d'exclusion (Ne pas planter à côté) : {data['ennemis']}")
 
-# --- MODULE 3 : GUIDE ET APPRENTISSAGE (VERTICALISATION INTERNE FIXÉE) ---
+# --- MODULE 3 : GUIDE ET APPRENTISSAGE ---
 st.markdown("""
     <div class="app-menu-card">
         <div class="card-left">
@@ -214,15 +214,15 @@ with st.expander("Ouvrir le guide visuel de croissance"):
     
     # Étape 1 : Pépinière
     st.markdown('<div class="img-container-vertical">', unsafe_allow_html=True)
-    try:
-        st.image(images_verticales["pepiniere"], caption="🌱 Étape 1 : La Pépinière / Semis", use_container_width=True)
-    except:
-        st.warning("🌱 [Image Pépinière active en tâche de fond]")
+    st.image(images_verticales["pepiniere"], caption="🌱 Étape 1 : La Pépinière / Semis", use_container_width=True)
     st.write(f"📝 *Consigne technique :* {data['pepiniere']}")
     st.markdown('</div><br>', unsafe_allow_html=True)
     
     # Étape 2 : Repiquage
     st.markdown('<div class="img-container-vertical">', unsafe_allow_html=True)
-    try:
-        st.image(images_verticales["repiquage"], caption="📐 Étape 2 : Le Repiquage au champ", use_container_width=True)
-    except:
+    st.image(images_verticales["repiquage"], caption="📐 Étape 2 : Le Repiquage au champ", use_container_width=True)
+    st.write(f"📝 *Consigne technique :* {data['repiquage']}")
+    st.markdown('</div><br>', unsafe_allow_html=True)
+    
+    # Étape 3 : Entretien
+    st.markdown('<div class="img-container-vertical">', unsafe_allow_html=True)
