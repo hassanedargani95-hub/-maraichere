@@ -4,191 +4,167 @@ import streamlit as st
 st.set_page_config(page_title="La Bible du Maraîchage", page_icon="🌱", layout="centered")
 
 # ==========================================
-# DESIGN ÉCO-PREMIUM ET REPOSITIONNEMENT BOUTON (CSS)
+# DESIGN EXCLUSIF "DELICIOUS FOOD" APPLICATIF (CSS)
 # ==========================================
 st.markdown("""
     <style>
         @import url('https://googleapis.com');
         
-        /* Fond d'écran vert végétal texturé avec symboles de légumes */
+        /* Fond d'écran épuré gris/bleu très clair comme le modèle */
         .stApp {
-            background-color: #E8F2EA;
-            background-image: radial-gradient(#C6E2CC 2px, transparent 2px), radial-gradient(#C6E2CC 2px, #E8F2EA 2px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
+            background-color: #F3F5F7;
             font-family: 'Lexend', sans-serif;
         }
         header {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* --- EN-TÊTE DE L'APPLICATION --- */
-        .app-main-title {
+        /* --- BARRE SUPÉRIEURE ÉPURÉE --- */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            margin-bottom: 5px;
+        }
+        .top-menu-icon { font-size: 22px; color: #1F2937; cursor: pointer; }
+        
+        /* --- SECTION EN-TÊTE STYLISÉE --- */
+        .section-title {
             font-family: 'Fredoka One', cursive;
-            color: #0F4220;
-            font-size: 26px;
-            margin: 0;
+            color: #1F2937;
+            font-size: 22px;
+            margin: 15px 0 5px 5px;
             text-align: left;
         }
-        .app-main-subtitle {
+        .section-subtitle {
             color: #4B5563;
             font-size: 13px;
-            font-weight: 400;
-            margin-top: 6px;
+            margin-left: 5px;
+            margin-bottom: 15px;
             text-align: left;
             font-style: italic;
         }
         
-        /* --- ZONE DE DIAGNOSTIC PREMIUM --- */
-        .scanner-box-premium {
+        /* --- CARTES DE PRODUITS DU CATALOGUE --- */
+        .product-card {
             background: #FFFFFF;
-            padding: 22px 18px;
+            padding: 15px;
             border-radius: 24px;
-            box-shadow: 0px 8px 24px rgba(15, 66, 32, 0.06);
-            border: 1px solid rgba(15, 66, 32, 0.04);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.01);
             text-align: center;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
-        .scanner-title {
-            font-family: 'Lexend', sans-serif;
+        .product-price {
             font-weight: 700;
-            font-size: 17px;
-            color: #0F4220;
-            margin-bottom: 5px;
-        }
-        .scanner-instruction {
-            font-size: 12px;
-            color: #6B7280;
-            font-weight: 400;
-            margin-bottom: 12px;
+            color: #10B981;
+            font-size: 16px;
+            margin-top: 5px;
         }
         
-        /* Style des boîtes d'informations générales */
-        .info-card-premium {
-            background-color: #FFFFFF;
-            padding: 18px;
-            border-radius: 22px;
-            margin-top: 12px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.01);
-            text-align: left;
+        /* --- BARRE DE NAVIGATION INFÉRIEURE FIXE BLEUE --- */
+        .bottom-nav-bar {
+            background-color: #2563EB;
+            padding: 12px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 30px;
+            box-shadow: 0px 8px 24px rgba(37, 99, 235, 0.2);
         }
-        .info-card-title {
-            font-weight: 700;
-            color: #0F4220;
-            font-size: 14px;
-            margin-bottom: 8px;
+        .nav-icon {
+            color: #FFFFFF;
+            font-size: 20px;
+            opacity: 0.8;
+            cursor: pointer;
         }
-        .business-box {
-            background-color: #EBF3F9; border-left: 5px solid #1F4E79;
-            padding: 15px; border-radius: 8px; color: #1F4E79; margin-top: 10px;
-            font-size: 13px; font-weight: 300;
-            text-align: left;
-        }
+        .nav-icon:hover { opacity: 1; }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# BASE DE DONNÉES ENCYCLOPÉDIQUE DE PRÉCISION
+# BASE DE DONNÉES DU CATALOGUE AGROBUSINESS
 # ==========================================
-base_cultures = {
-    "Tomate": {"amis": "Carotte, Oignon, Basilic", "ennemis": "Pomme de terre", "pepiniere": "21-25 jours sous moustiquaire. Arrosage matin/soir.", "repiquage": "50cm entre plants. Lignes séparées de 80cm.", "rendement": 3.5, "conservation": "Froid modéré (12°C) pour les étals.", "transformation": "Concentré de tomate, purée pasteurisée"},
-    "Pastèque": {"amis": "Maïs, Gombo, Radis", "ennemis": "Concombre, Melon", "pepiniere": "Zéro jour (Semis direct obligatoire en poquets au champ).", "repiquage": "1m entre les poquets, 2m entre les lignes.", "rendement": 12.0, "conservation": "À l'ombre au sec (2-3 semaines).", "transformation": "Jus frais pasteurisé, confiture d'écorce"},
-    "Concombre": {"amis": "Laitue, Oignon", "ennemis": "Tomate, Pastèque", "pepiniere": "Semis direct ou 12 jours en godet.", "repiquage": "40cm d'espacement. Tuteurage solide.", "rendement": 4.0, "conservation": "7 jours emballé au frais.", "transformation": "Cornichons au vinaigre ou saumure locale"},
-    "Laitue / Salade": {"amis": "Carotte, Oignon, Tomate", "ennemis": "Persil", "pepiniere": "15 jours en bac abrité.", "repiquage": "Planches de 25cm x 25cm. Collet libre.", "rendement": 0.3, "conservation": "2 jours dans un linge frais.", "transformation": "Consommation fraîche exclusive"},
-    "Menthe": {"amis": "Chou, Tomate", "ennemis": "Camomille", "pepiniere": "Bouturage rapide dans l'eau.", "repiquage": "30cm d'intervalle. Plante traçante.", "rendement": 1.2, "conservation": "Séchage complet à l'ombre.", "transformation": "Huile essentielle, sirop artisanal"},
-    "Persil & Céleri": {"amis": "Tomate, Oignon", "ennemis": "Laitue", "pepiniere": "Levée lente (Tremper les graines 24h).", "repiquage": "25cm d'écartement sur lignes denses.", "rendement": 1.5, "conservation": "Séchage complet ou congélation.", "transformation": "Sel aromatisé, extraits séchés"}
+catalogue_produits = {
+    "Tomate Cobra F1": {"emoji": "🍅", "prix": "450 FCFA / Kilo", "desc": "Calibre uniforme, haute résistance au transport.", "conservation": "Froid modéré (12°C) pour les étals marchés.", "transformation": "Concentré de tomate locale pasteurisée."},
+    "Pastèque Ronde": {"emoji": "🍉", "prix": "1 500 FCFA / Unité", "desc": "Très sucrée, chair ferme rouge éclatante.", "conservation": "À l'ombre au sec ventilé pendant 2 à 3 semaines.", "transformation": "Jus frais pasteurisé conditionné en bouteille."},
+    "Concombre Long": {"emoji": "🥒", "prix": "300 FCFA / Kilo", "desc": "Croquant, idéal pour les restaurants locaux.", "conservation": "7 jours emballé sous bâche fraîche à 10°C.", "transformation": "Cornichons marinés en saumure vinaigrée."},
+    "Laitue Feuille": {"emoji": "🥬", "prix": "200 FCFA / Pied", "desc": "Fraîcheur maximale, cycle court de récolte.", "conservation": "2 jours maximum enveloppé dans un linge humide.", "transformation": "Vente directe exclusive en circuit frais."}
 }
 
-# --- BARRE SUPÉRIEURE DE NAVIGATION ALIGNÉE AVEC LES 3 POINTS ---
-col_vide, col_menu_trois_points = st.columns([3, 1])
+# --- 1. REPRODUCTION DE LA BARRE SUPÉRIEURE ---
+col_menu_gauche, col_profil_droite = st.columns([3, 1])
+with col_menu_gauche:
+    st.markdown('<div class="top-menu-icon">☰</div>', unsafe_allow_html=True)
+with col_profil_droite:
+    # L'option d'enregistrement se loge proprement tout en haut à droite
+    ouvrir_profil = st.button("👤 Profil", key="btn_top_profil", use_container_width=True)
 
-with col_menu_trois_points:
-    # Le bouton s'installe discrètement à la place du menu vert à 3 points
-    ouvrir_profil = st.button("••• Inscription", key="btn_top_right", use_container_width=True)
-
-# Affichage du formulaire d'enregistrement si l'utilisateur clique sur "••• Inscription"
 if ouvrir_profil:
-    st.markdown("<div class='info-card-premium' style='border-top: 4px solid #10B981;'>", unsafe_allow_html=True)
-    with st.form("form_inscription"):
-        st.markdown("### 📝 Créer votre compte producteur")
-        nom = st.text_input("Nom de l'exploitant :", placeholder="Ex: Issouf")
-        localite = st.text_input("Localisation du champ :", placeholder="Ex: Bobo-Dioulasso")
-        st.form_submit_button("Valider mon inscription")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div class='product-card' style='text-align:left;'>", unsafe_allow_html=True)
+    with St.form("form_inscription"):
+        st.markdown("### 📝 Enregistrement Producteur")
+        Nom = st.text_input("Nom de l'exploitant :", placeholder="Ex: Issouf")
+        Localite = st.text_input("Zone de culture :", placeholder="Ex: Bobo-Dioulasso")
+        St.form_submit_button("Créer mon compte")
+    St.markdown("</div>", unsafe_allow_html=True)
 
-# --- TEXTE D'ACCUEIL ---
-st.markdown('<h1 class="app-main-title">La Bible de la Maraîchère Culture</h1>', unsafe_allow_html=True)
-st.markdown('<p class="app-main-subtitle">Pas besoin de tout connaître, suivez les étapes par étapes.</p>', unsafe_allow_html=True)
+# --- 2. TITRE DE SECTION STYLE "DELICIOUS FOOD" ---
+st.markdown('<div class="section-title">Delicious Food</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-subtitle">Pas besoin de tout connaître, suivez les étapes par étapes.</div>', unsafe_allow_html=True)
 
-# --- SÉLECTION DE LA CULTURE ---
-st.markdown("<p style='font-weight:600; color:#0F4220; font-size:13px; margin-bottom:5px; margin-top:20px; text-align:left;'>🥦 SÉLECTIONNER VOTRE VARIÉTÉ CIBLE :</p>", unsafe_allow_html=True)
-culture = st.selectbox("", list(base_cultures.keys()), label_visibility="collapsed")
-data = base_cultures[culture]
+# --- 3. BARRE DE FILTRES DES CATÉGORIES (HORIZONTALE) ---
+st.write("✨ **Catégories disponibles :**")
+categorie_choisie = st.radio("", ["Tout voir", "Maraîchère", "Aromatique", "Agrobusiness"], horizontal=True, label_visibility="collapsed")
 
-# --- STRUCTURE DES ONGLETS ---
-onglet1, onglet2, onglet3, onglet4, onglet5 = st.tabs(["📸 Scanner", "🌿 Associations", "🚜 Guide Suivi", "🏭 Agrobusiness", "💰 Budget"])
+st.markdown("<br>", unsafe_allow_html=True)
 
-# --- ONGLET 1 : SCANNER ---
+# --- 4. GRILLE DES PRODUITS DU CHAMP ---
+st.markdown('<div class="section-title" style="font-size:18px;">Sélection des cultures</div>', unsafe_allow_html=True)
+
+culture_choisie = st.selectbox("Sélectionnez le légume à analyser :", list(catalogue_produits.keys()))
+produit = catalogue_produits[culture_choisie]
+
+# Affichage de la carte produit stylisée
+st.markdown(f"""
+    <div class="product-card">
+        <div style="font-size: 55px; margin-bottom: 10px;">{produit['emoji']}</div>
+        <div style="font-weight: 700; font-size: 18px; color: #1F2937;">{culture_choisie}</div>
+        <div style="font-size: 13px; color: #6B7280; margin-top: 4px;">{produit['desc']}</div>
+        <div class="product-price">{produit['prix']}</div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Structure des modules techniques via les onglets épurés sous la carte
+onglet1, onglet2, onglet3 = st.tabs(["📸 Scanner Réseau", "🏭 Agrobusiness & Stock", "💰 Calculateur Marge"])
+
 with onglet1:
-    st.markdown("""
-        <div class="scanner-box-premium">
-            <div class="scanner-title">📸 Laboratoire de Diagnostic</div>
-            <div class="scanner-instruction">Sélectionnez une ou plusieurs photos dans votre galerie pour lancer l'analyse.</div>
-        </div>
-    """, unsafe_allow_html=True)
     st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
-    
-    fichiers_photos = st.file_uploader("", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
+    fichiers_photos = st.file_uploader("Sélectionnez vos images pour l'analyse IA :", type=["jpg", "png", "jpeg"], accept_multiple_files=True)
     if fichiers_photos:
-        st.info(f"📸 {len(fichiers_photos)} photo(s) importée(s) avec succès.")
-        st.success(f"Analyse Cloud terminée pour : {culture}. Aucun parasite critique détecté.")
+        st.success(f"🤖 {len(fichiers_photos)} photo(s) analysée(s). Structure foliaire saine.")
 
-# --- ONGLET 2 : COMPAGNONNAGE ---
 with onglet2:
     st.markdown(f"""
-        <div class="info-card-premium">
-            <div class="info-card-title">🤝 Voisinage Recommandé (Plantes amies) :</div>
-            <p style='font-size:13px; color:#374151;'>{data['amis']}</p>
-            <hr style='border: 0; border-top: 1px solid #E5E7EB; margin: 15px 0;'>
-            <div class="info-card-title" style='color:#DC2626;'>❌ Zone d'Exclusion (Plantes ennemies) :</div>
-            <p style='font-size:13px; color:#374151;'>{data['ennemis']}</p>
+        <div class="product-card" style="text-align:left; border-left:4px solid #2563EB;">
+            <b style="color:#2563EB;">🧊 Conservation Pro :</b><br>{produit['conservation']}<br><br>
+            <b style="color:#10B981;">🍯 Option Transformation :</b><br>{produit['transformation']}
         </div>
     """, unsafe_allow_html=True)
 
-# --- ONGLET 3 : GUIDE SUIVI ---
 with onglet3:
-    st.markdown(f"""
-        <div class="info-card-premium">
-            <div class="info-card-title">🌱 Étape 1 : La Pépinière / Semis</div>
-            <p style='font-size:13px; color:#4B5563;'>{data['pepiniere']}</p>
-        </div>
-        <div class="info-card-premium">
-            <div class="info-card-title">📐 Étape 2 : Le Repiquage au champ</div>
-            <p style='font-size:13px; color:#4B5563;'>{data['repiquage']}</p>
-        </div>
-        <div class="info-card-premium">
-            <div class="info-card-title">✂️ Étape 3 : Entretien et Suivi</div>
-            <p style='font-size:13px; color:#4B5563;'>Désherber manuellement et maintenir un paillage organique régulier au pied.</p>
-        </div>
-        <div class="info-card-premium">
-            <div class="info-card-title">🧺 Étape 4 : Récolte et Cueillette</div>
-            <p style='font-size:13px; color:#4B5563;'>Cueillette au stade optimal. Rendement estimé : <b>{data['rendement']} kg</b> par unité.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    St.markdown("### 💰 Simulation de Campagne")
+    Unites = st.number_input("Nombre de pieds cultivés :", min_value=10, value=500, step=50)
+    Charges = st.number_input("Total des dépenses engagées (FCFA) :", min_value=0, value=25000, step=1000)
+    St.metric(label="Volume estimé de récolte", value=f"{unites * 3.5:.1f} kg")
 
-# --- ONGLET 4 : AGROBUSINESS ---
-with onglet4:
-    st.markdown(f"""
-        <div class="info-card-premium" style="border-left: 5px solid #3B82F6;">
-            <div class="info-card-title" style="color:#1D4ED8;">🧊 Méthodes de Stockage et Conservation :</div>
-            <p style='font-size:13px; color:#374151;'>{data['conservation']}</p>
-        </div>
-        <div class="info-card-premium" style="border-left: 5px solid #10B981;">
-            <div class="info-card-title" style="color:#047857;">🍯 Procédés de Transformation Locale :</div>
-            <p style='font-size:13px; color:#374151;'>{data['transformation']}</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-# --- ONGLET 5 : BUDGET ---
-with onglet5:
-    st.markdown("### 💰 Simulateur de Rentabilité Financière")
+# --- 5. REPRODUCTION DE LA BARRE DE NAVIGATION INFÉRIEURE BLEUE ---
+st.markdown("""
+    <div class="bottom-nav-bar">
+        <div class="nav-icon">🏠</div>
+        <div class="nav-icon">⭐</div>
+        <div class="nav-icon">👤</div>
+        <div class="nav-icon">⚙️</div>
+    </div>
+""", unsafe_allow_html=True)
