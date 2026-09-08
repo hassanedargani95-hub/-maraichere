@@ -4,15 +4,21 @@ import pandas as pd
 # Configuration de la page mobile
 st.set_page_config(page_title="La Bible de la Maraîchère Culture", page_icon="🌱", layout="centered")
 
-# INITIALISATION DE LA BASE DE DONNÉES DES INSCRITS
+# INITIALISATION DE LA BASE DE DONNÉES DES INSCRITS AVEC VOS 6 CRITÈRES
 if "liste_inscrits" not in st.session_state:
     st.session_state["liste_inscrits"] = [
-        {"Nom": "HASSANE DARGANI", "Zone de culture": "Bobo-Dioulasso"},
-        {"Nom": "Moussa", "Zone de culture": "Orodara"}
+        {
+            "Nom": "DARGANI", 
+            "Prénom": "Hassane", 
+            "Numéro téléphone": "+226 00 00 00 00", 
+            "Mail": "hassane@example.com", 
+            "Production": "Tomate & Pastèque", 
+            "Localité": "Bobo-Dioulasso"
+        }
     ]
 
 # ==========================================
-# DESIGN EXCLUSIF AVEC CADRE TITRE ET BOÎTES (CSS)
+# DESIGN CONFIGURATION ET ADAPTATION (CSS)
 # ==========================================
 st.markdown("""
     <style>
@@ -51,7 +57,7 @@ st.markdown("""
         }
         .app-main-title {
             font-family: 'Fredoka One', cursive;
-            color: #10B981 !important; /* Couleur Vert Émeraude */
+            color: #10B981 !important;
             font-size: 23px;
             margin: 0;
         }
@@ -108,18 +114,31 @@ with col_menu_gauche:
 with col_profil_droite:
     ouvrir_profil = st.button("👤 Profil", key="btn_top_profil", use_container_width=True)
 
+# Formulaire d'enregistrement structuré selon vos 6 demandes
 if ouvrir_profil:
     st.markdown("<div class='product-card'>", unsafe_allow_html=True)
     st.markdown('<div class="form-title">📝 Enregistrement Exploitant</div>', unsafe_allow_html=True)
     
     with st.form("form_inscription", clear_on_submit=True):
-        nouveau_nom = st.text_input("Nom de l'exploitant :", placeholder="Ex: Moussa")
-        nouvelle_zone = st.text_input("Zone de culture :", placeholder="Ex: Bobo-Dioulasso")
+        ins_nom = st.text_input("Nom :", placeholder="Dargani")
+        ins_prenom = st.text_input("Prénom :", placeholder="Hassane")
+        ins_tel = st.text_input("Numéro téléphone :", placeholder="+226 ...")
+        ins_mail = st.text_input("Mail :", placeholder="exemple@mail.com")
+        ins_prod = st.text_input("Production :", placeholder="Tomate, Pastèque, Oignon...")
+        ins_localite = st.text_input("Localité :", placeholder="Bobo-Dioulasso")
+        
         bouton_valider = st.form_submit_button("Créer mon compte")
         
-        if bouton_valider and nouveau_nom and nouvelle_zone:
-            st.session_state["liste_inscrits"].append({"Nom": nouveau_nom, "Zone de culture": nouvelle_zone})
-            st.success(f"Bienvenue {nouveau_nom} ! Votre compte est créé.")
+        if bouton_valider and ins_nom and ins_prenom:
+            st.session_state["liste_inscrits"].append({
+                "Nom": ins_nom.upper(),
+                "Prénom": ins_prenom.title(),
+                "Numéro téléphone": ins_tel,
+                "Mail": ins_mail,
+                "Production": ins_prod,
+                "Localité": ins_localite
+            })
+            st.success(f"Compte créé avec succès pour {ins_prenom} {ins_nom} !")
     st.markdown("</div>", unsafe_allow_html=True)
 
 # --- 2. CADRE DU TITRE ---
@@ -173,7 +192,7 @@ with onglet3:
     unites = st.number_input("Nombre de pieds cultivés :", min_value=10, value=500, step=50)
     st.metric(label="Volume estimé de récolte", value=f"{unites * 3.5:.1f} kg")
 
-# --- 4. PANNEAU DE CONTRÔLE SECRET POUR HASSANE DARGANI (HD) ---
+# --- 4. PANNEAU DE CONTRÔLE AVEC VOS 6 PARAMÈTRES (HD) ---
 st.markdown("---")
 st.markdown("<p style='font-size:11px; color:#9CA3AF; text-align:center;'>🔒 Zone Réservée Direction (HD)</p>", unsafe_allow_html=True)
 check_admin = st.checkbox("Accéder à la liste des inscrits au champ", key="admin_panel")
@@ -182,6 +201,8 @@ if check_admin:
     st.markdown("<div class='product-card' style='text-align:left;'>", unsafe_allow_html=True)
     st.markdown("### 📋 Liste des producteurs enregistrés")
     df_producteurs = pd.DataFrame(st.session_state["liste_inscrits"])
+    # Réorganisation précise des colonnes demandées
+    df_producteurs = df_producteurs[["Nom", "Prénom", "Numéro téléphone", "Mail", "Production", "Localité"]]
     st.dataframe(df_producteurs, use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
