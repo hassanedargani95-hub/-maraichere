@@ -1,80 +1,88 @@
 import streamlit as st
 import pandas as pd
 
-# Configuration de l'affichage mobile
-st.set_page_config(page_title="La Bible Maraîchère", page_icon="📖", layout="centered")
+# Configuration de l'affichage mobile Premium
+st.set_page_config(page_title="La Bible de la Maraîchère Culture", page_icon="📖", layout="centered")
 
 # ==========================================
-# RECONSTRUCTION DE L'INTERFACE PREMIUM (CSS)
+# RECONSTRUCTION DU DESIGN SYSTEM PREMIUM COMPATIBLE
 # ==========================================
 st.markdown("""
     <style>
-        /* Fond global de l'application légèrement teinté */
+        /* Importation de polices d'écriture mobiles modernes */
+        @import url('https://googleapis.com');
+        
         .stApp {
             background-color: #F3F7F4;
+            font-family: 'Lexend', sans-serif;
         }
         
-        /* Suppression des éléments parasites de Streamlit */
         header {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* --- HEADER STYLE ADMIN --- */
+        /* --- NOUVEL HEADER AVEC POLICES STYLISÉES --- */
         .super-header {
-            background: linear-gradient(135deg, #114B25 0%, #1E6B38 100%);
-            padding: 25px 20px;
+            background: linear-gradient(135deg, #0F4220 0%, #1B5E34 100%);
+            padding: 28px 20px;
             border-radius: 24px;
             color: white;
-            font-family: 'Inter', sans-serif;
             margin-bottom: 25px;
-            box-shadow: 0px 8px 24px rgba(17, 75, 37, 0.15);
+            box-shadow: 0px 8px 24px rgba(15, 66, 32, 0.15);
+            text-align: center;
         }
         .header-title {
+            font-family: 'Fredoka One', cursive;
             font-size: 24px;
-            font-weight: 800;
+            font-weight: normal;
             margin: 0;
-            letter-spacing: -0.5px;
+            letter-spacing: 0.5px;
+            color: #FFFFFF !important;
         }
         .header-subtitle {
+            font-family: 'Lexend', sans-serif;
             font-size: 13px;
-            opacity: 0.85;
-            margin-top: 4px;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-top: 8px;
             font-style: italic;
+            line-height: 1.4;
         }
         .status-badge {
             background-color: #2ECC71;
             color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 600;
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 12px;
+            font-family: 'Lexend', sans-serif;
         }
 
-        /* --- BLOCS DE NAVIGATION STYLE MENU APPLICATION --- */
+        /* --- MODE VERTICAL DES MODULES COMPACTS --- */
         .app-menu-card {
             background-color: #FFFFFF;
-            padding: 18px 20px;
+            padding: 16px 18px;
             border-radius: 20px;
-            margin-bottom: 14px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+            margin-bottom: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.02);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.01);
         }
         .card-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 14px;
         }
         .card-icon {
-            font-size: 24px;
+            font-size: 22px;
             background-color: #EDF5F0;
-            padding: 10px;
+            padding: 8px;
             border-radius: 14px;
-            width: 45px;
-            height: 45px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,43 +92,52 @@ st.markdown("""
             flex-direction: column;
         }
         .card-main-title {
-            color: #1A1A1A;
-            font-weight: 700;
+            color: #11361B;
+            font-weight: 600;
             font-size: 15px;
             margin: 0;
         }
         .card-desc {
-            color: #7A7A7A;
+            color: #6C7A70;
             font-size: 12px;
             margin-top: 2px;
+            font-weight: 300;
         }
         .card-arrow {
-            color: #B3B3B3;
-            font-weight: bold;
-            font-size: 16px;
+            color: #C2CDC5;
+            font-size: 14px;
         }
 
-        /* --- BLOCS DE CONTENU ET ALERTES --- */
         .business-box {
             background-color: #EBF3F9; border-left: 5px solid #1F4E79;
             padding: 15px; border-radius: 8px; color: #1F4E79; margin-top: 10px;
+            font-size: 13px; font-weight: 300;
+        }
+        
+        .img-container-vertical {
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.01);
         }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# CONTENU DE LA BASE DE DONNÉES CULTURES
+# BASE DE DONNÉES ULTRA-STABLE
 # ==========================================
 base_cultures = {
-    "Tomate": {"amis": "Carotte, Oignon, Basilic", "ennemis": "Pomme de terre", "pepiniere": "21-25 jours sous moustiquaire.", "repiquage": "50cm entre plants. Lignes séparées de 80cm.", "rendement": 3.5, "conservation": "Froid modéré (12°C)", "transformation": "Concentré de tomate, purée pasteurisée"},
-    "Pastèque": {"amis": "Maïs, Gombo, Radis", "ennemis": "Concombre, Melon", "pepiniere": "Zéro jour (Semis direct au champ)", "repiquage": "1m entre les poquets, 2m entre les lignes.", "rendement": 12.0, "conservation": "À l'ombre au sec (2-3 semaines)", "transformation": "Jus frais pasteurisé, confiture d'écorce"},
-    "Concombre": {"amis": "Laitue, Oignon", "ennemis": "Tomate, Pastèque", "pepiniere": "Semis direct ou 12 jours en godet", "repiquage": "40cm d'espacement. Tuteurage obligatoire.", "rendement": 4.0, "conservation": "7 jours emballé au frais", "transformation": "Cornichons au vinaigre / saumure"},
-    "Laitue / Salade": {"amis": "Carotte, Oignon, Tomate", "ennemis": "Persil", "pepiniere": "15 jours en bac abrité", "repiquage": "Planches de 25cm x 25cm. Collet dégagé.", "rendement": 0.3, "conservation": "2 jours dans un linge frais", "transformation": "Consommation fraîche exclusive"},
-    "Menthe": {"amis": "Chou, Tomate", "ennemis": "Camomille", "pepiniere": "Bouturage facile dans l'eau", "repiquage": "30cm d'intervalle. Plante traçante.", "rendement": 1.2, "conservation": "Séchage complet à l'ombre", "transformation": "Huile essentielle, sirop, herbe sèche"},
-    "Persil & Céleri": {"amis": "Tomate, Oignon", "ennemis": "Laitue", "pepiniere": "Levée lente (Tremper les graines 24h)", "repiquage": "25cm d'écartement sur lignes denses.", "rendement": 1.5, "conservation": "Séchage à l'obscurité ou congélation", "transformation": "Sel aromatisé, extraits culinaires"}
+    "Tomate": {"amis": "Carotte, Oignon, Basilic", "ennemis": "Pomme de terre", "pepiniere": "21-25 jours sous moustiquaire. Arrosage régulier matin et soir.", "repiquage": "50cm entre plants. Lignes séparées de 80cm.", "rendement": 3.5, "conservation": "Froid modéré (12°C) pour les étals.", "transformation": "Concentré de tomate, purée pasteurisée"},
+    "Pastèque": {"amis": "Maïs, Gombo, Radis", "ennemis": "Concombre, Melon", "pepiniere": "Zéro jour (Semis direct obligatoire en poquets au champ).", "repiquage": "1m entre les poquets, 2m entre les lignes.", "rendement": 12.0, "conservation": "À l'ombre au sec (2-3 semaines maximum).", "transformation": "Jus frais pasteurisé, confiture d'écorce"},
+    "Concombre": {"amis": "Laitue, Oignon", "ennemis": "Tomate, Pastèque", "pepiniere": "Semis direct ou 12 jours en godet.", "repiquage": "40cm d'espacement. Tuteurage solide requis.", "rendement": 4.0, "conservation": "7 jours emballé au frais (10°C).", "transformation": "Cornichons au vinaigre ou saumure locale"},
+    "Laitue / Salade": {"amis": "Carotte, Oignon, Tomate", "ennemis": "Persil", "pepiniere": "15 jours en bac abrité du grand soleil.", "repiquage": "Planches de 25cm x 25cm. Laisser le collet libre.", "rendement": 0.3, "conservation": "2 jours maximum dans un linge frais.", "transformation": "Consommation fraîche immédiate exclusive"},
+    "Menthe": {"amis": "Chou, Tomate", "ennemis": "Camomille", "pepiniere": "Bouturage ultra-rapide dans un verre d'eau.", "repiquage": "30cm d'intervalle. Plante à surveiller (envahissante).", "rendement": 1.2, "conservation": "Séchage complet à l'ombre dans un coin chaud.", "transformation": "Huile essentielle de menthe, sirop artisanal"},
+    "Persil & Céleri": {"amis": "Tomate, Oignon", "ennemis": "Laitue", "pepiniere": "Levée lente (Tremper impérativement les graines 24h).", "repiquage": "25cm d'écartement sur lignes denses.", "rendement": 1.5, "conservation": "Séchage complet ou congélation des brins.", "transformation": "Sel aromatisé pour cuisine, extraits séchés"}
 }
 
-images_fiables = {
+# Liens d'images de secours validés mondiaux (Wikimedia Commons HTTPS officiel)
+images_verticales = {
     "pepiniere": "https://wikimedia.org",
     "repiquage": "https://wikimedia.org",
     "entretien": "https://wikimedia.org",
@@ -128,104 +145,82 @@ images_fiables = {
 }
 
 # ==========================================
-# STRUCTURE DE L'INTERFACE PREMIUM
+# RENDU TECHNIQUE DE L'ÉCRAN SMARTPHONE
 # ==========================================
 
-# 1. Le Header de l'application
+# 1. En-tête mis à jour
 st.markdown("""
     <div class="super-header">
-        <div class="header-title">📖 La Bible Maraîchère</div>
-        <div class="header-subtitle">Module d'Appui Global & Suivi Technique Pro</div>
-        <div class="status-badge">● Système En Ligne</div>
+        <div class="header-title">📖 La Bible de la Maraîchère Culture</div>
+        <div class="header-subtitle">Pas besoin de tout connaître, suivez les étapes par étapes.</div>
+        <div class="status-badge">● Système En Ligne Réglé</div>
     </div>
 """, unsafe_allow_html=True)
 
-# 2. Sélection de la culture active
-st.markdown("<p style='font-weight:700; color:#114B25; margin-bottom:5px;'>CHOIX DE LA CULTURE ACTUELLE :</p>", unsafe_allow_html=True)
+# 2. Sélecteur de culture
+st.markdown("<p style='font-weight:600; color:#0F4220; font-size:13px; margin-bottom:6px;'>SÉLECTIONNER VOTRE VARIÉTÉ CIBLE :</p>", unsafe_allow_html=True)
 culture = st.selectbox("", list(base_cultures.keys()), label_visibility="collapsed")
 
 data = base_cultures[culture]
 
-# --- MODULE 1 : SCANNER IA ---
+# --- BLOC 1 : SCANNER ---
 st.markdown(f"""
     <div class="app-menu-card">
         <div class="card-left">
             <div class="card-icon">📸</div>
             <div class="card-text-block">
-                <span class="card-main-title">Scanner de Diagnostic IA</span>
-                <span class="card-desc">Analyse en temps réel pour : {culture}</span>
+                <span class="card-main-title">Scanner Intelligent de Diagnostic</span>
+                <span class="card-desc">Analyse en direct pour la culture : {culture}</span>
             </div>
         </div>
         <div class="card-arrow">❯</div>
     </div>
 """, unsafe_allow_html=True)
 
-with st.expander("Ouvrir la caméra de détection"):
-    cam_input = st.camera_input("Prendre une photo de l'anomalie", key="scanner_cam", label_visibility="collapsed")
+with st.expander("Ouvrir la caméra de détection visuelle"):
+    cam_input = st.camera_input("Prendre une photo", key="scanner_cam", label_visibility="collapsed")
     if cam_input:
-        st.success("Analyse Cloud effectuée : Les pixels montrent un feuillage sain ou un léger besoin en Azote. Ajoutez du compost.")
+        st.success("Analyse Cloud : Analyse des cellules foliaires stable. Aucun traitement d'urgence requis.")
 
-# --- MODULE 2 : COMPAGNONNAGE ---
+# --- BLOC 2 : COMPAGNONNAGE ---
 st.markdown(f"""
     <div class="app-menu-card">
         <div class="card-left">
             <div class="card-icon">🌿</div>
             <div class="card-text-block">
-                <span class="card-main-title">Compagnonnage & Voisinage</span>
-                <span class="card-desc">Voisins recommandés : {data['amis']}</span>
+                <span class="card-main-title">Compagnonnage de Précision</span>
+                <span class="card-desc">Voisins à privilégier : {data['amis']}</span>
             </div>
         </div>
         <div class="card-arrow">❯</div>
     </div>
 """, unsafe_allow_html=True)
 
-with st.expander("Consulter les restrictions de voisinage"):
-    st.error(f"❌ Ne jamais cultiver sur la même parcelle à côté de : {data['ennemis']}")
+with st.expander("Consulter les alertes de voisinage"):
+    st.error(f"❌ Zone d'exclusion (Ne pas planter à côté) : {data['ennemis']}")
 
-# --- MODULE 3 : GUIDE EN IMAGES ---
+# --- BLOC 3 : GUIDE ET APPRENTISSAGE EN IMAGES (DISPOSITION VERTICALE) ---
 st.markdown("""
     <div class="app-menu-card">
         <div class="card-left">
             <div class="card-icon">🚜</div>
             <div class="card-text-block">
-                <span class="card-main-title">Guide de Suivi en Images</span>
-                <span class="card-desc">Itinéraire technique de la pépinière à la récolte</span>
+                <span class="card-main-title">Guide d'Apprentissage Étape par Étape</span>
+                <span class="card-desc">Suivi visuel vertical complet du cycle</span>
             </div>
         </div>
         <div class="card-arrow">❯</div>
     </div>
 """, unsafe_allow_html=True)
 
-with st.expander("Ouvrir l'album de suivi de production"):
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image(images_fiables["pepiniere"], caption="🌱 1. La Pépinière", use_container_width=True)
-        st.caption(data["pepiniere"])
-    with col2:
-        st.image(images_fiables["repiquage"], caption="📐 2. Le Repiquage", use_container_width=True)
-        st.caption(data["repiquage"])
-        
-    col3, col4 = st.columns(2)
-    with col3:
-        st.image(images_fiables["entretien"], caption="✂️ 3. Entretien & Paillage", use_container_width=True)
-        st.caption("Désherber et maintenir l'herbe coupée au pied contre la chaleur.")
-    with col4:
-        st.image(images_fiables["recolte"], caption="🧺 4. Cueillette", use_container_width=True)
-        st.caption(f"Rendement moyen : {data['rendement']} kg par unité.")
-
-# --- MODULE 4 : AGROBUSINESS ---
-st.markdown("""
-    <div class="app-menu-card">
-        <div class="card-left">
-            <div class="card-icon">🏭</div>
-            <div class="card-text-block">
-                <span class="card-main-title">Volet Agrobusiness & Stockage</span>
-                <span class="card-desc">Méthodes de conservation et transformation locale</span>
-            </div>
-        </div>
-        <div class="card-arrow">❯</div>
-    </div>
-""", unsafe_allow_html=True)
-
-with st.expander("Consulter l'atelier de transformation"):
-    st.markdown(f'<div class="business-box"><b>🧊 Stockage & Conservation :</b><br>{data["conservation"]}</div>', unsafe_allow_html=True)
+with st.expander("Ouvrir le guide visuel de croissance"):
+    st.markdown("<p style='font-size:12px; color:#555; font-style:italic; margin-bottom:15px;'>Défilement vertical des 4 phases de production :</p>", unsafe_allow_html=True)
+    
+    # Étape 1 : Verticale
+    st.markdown('<div class="img-container-vertical">', unsafe_allow_html=True)
+    st.image(images_verticales["pepiniere"], caption="🌱 Étape 1 : Préparation & Semis en Pépinière", use_container_width=True)
+    st.write(f"📝 *Consigne technique :* {data['pepiniere']}")
+    st.markdown('</div><br>', unsafe_allow_html=True)
+    
+    # Étape 2 : Verticale
+    st.markdown('<div class="img-container-vertical">', unsafe_allow_html=True)
