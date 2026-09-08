@@ -155,7 +155,7 @@ with onglet3:
     unites = st.number_input("Nombre de pieds cultivés :", min_value=10, value=500, step=50)
     charges = st.number_input("Total des dépenses engagées (FCFA) :", min_value=0, value=25000, step=1000)
     st.metric(label="Volume estimé de récolte", value=f"{unites * 3.5:.1f} kg")
-
+    
 # --- 5. BARRE DE NAVIGATION INFÉRIEURE BLEUE FIXE ---
 st.markdown("""
     <div class="bottom-nav-bar">
