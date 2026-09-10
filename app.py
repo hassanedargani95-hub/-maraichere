@@ -86,7 +86,7 @@ base_cultures = {
 onglet = st.tabs(["📸 Scanner IA", "🌿 Catégories", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"])
 
 # --- ONGLET 1 : ANALYSE PHOTO CORRIGÉE ET STABLE ---
-with onglet[0]:
+with onglet:
     st.markdown('<div class="category-card"><h3>📸 Diagnostic de Santé Immédiat</h3>Prenez une photo claire d\'une feuille malade pour déclencher l\'analyse du serveur.</div>', unsafe_allow_html=True)
     
     photo_fichier = st.file_uploader("Sélectionnez ou prenez votre photo ici :", type=["jpg", "png", "jpeg"])
@@ -105,8 +105,8 @@ with onglet[0]:
         st.markdown('<div style="background-color:#FFF9E6; padding:12px; border-radius:10px; color:#7F6000; margin-top:10px;"><b>🧪 Traitement Chimique :</b> Utiliser un fongicide ou insecticide homologué uniquement en cas de forte attaque. Respecter le délai avant récolte.</div>', unsafe_allow_html=True)
 
 # --- ONGLET 2 : LES CATÉGORIES & COMPAGNONNAGE ---
-with onglet[1]:
-    st.markdown('<div class="category-card"><h3>🌿 Compagnonnage des Plantes</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allowed_html=True)
+with onglet:
+    st.markdown('<div class="category-card"><h3>🌿 Compagnonnage des Plantes</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allow_html=True)
     choix_plante = st.selectbox("Sélectionnez une culture :", list(base_cultures.keys()), key="cat_sel")
     
     if choix_plante:
@@ -116,7 +116,7 @@ with onglet[1]:
         st.error(f"❌ **À ÉVITER à proximité (Ennemis) :** {c['ennemis']}")
 
 # --- ONGLET 3 : SUIVI DES CYCLES DE A À Z ---
-with onglet[2]:
+with onglet:
     st.markdown('<div class="category-card"><h3>🚜 Étapes de Production en Images</h3>Les étapes clés de votre culture, de la pépinière jusqu\'au panier de récolte.</div>', unsafe_allow_html=True)
     choix_cycle = st.selectbox("Suivre le cycle de :", list(base_cultures.keys()), key="cycle_sel")
     
@@ -127,7 +127,7 @@ with onglet[2]:
         st.info(f"📈 **Rendement moyen attendu :** {cc['rendement']}")
 
 # --- ONGLET 4 : MODULE AGROBUSINESS ---
-with onglet[3]:
+with onglet:
     st.markdown('<div class="category-card"><h3>🏭 Volet Conservation & Transformation</h3>Valorisez vos récoltes pour augmenter vos revenus sur le marché de Bobo-Dioulasso.</div>', unsafe_allow_html=True)
     choix_biz = st.selectbox("Agrobusiness pour :", list(base_cultures.keys()), key="biz_sel")
     
@@ -138,7 +138,7 @@ with onglet[3]:
         st.markdown(f'<div class="badge-biz" style="color:#0B4619; border-color:#2CB674;">🍯 Procédés de Transformation :</div><p>{cb["transformation"]}</p>', unsafe_allow_html=True)
 
 # --- ONGLET 5 : CALCULATEUR DE RENTABILITÉ ---
-with onglet[4]:
+with onglet:
     st.markdown('<div class="category-card"><h3>💰 Simulateur de Budget Évolué</h3>Estimez vos gains réels en fonction du nombre de pieds et des techniques appliquées.</div>', unsafe_allow_html=True)
     pl_fin = st.selectbox("Culture de la campagne :", list(base_cultures.keys()), key="fin_sel")
     
