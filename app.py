@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Configuration de la page mobile avec le style de l'image
+# Configuration de la page mobile avec le style de la maquette
 st.set_page_config(page_title="La Bible Maraîchère", page_icon="📖", layout="centered")
 
 # ==========================================
@@ -8,7 +8,7 @@ st.set_page_config(page_title="La Bible Maraîchère", page_icon="📖", layout=
 # ==========================================
 st.markdown("""
     <style>
-        /* Fond de l'application grise/blanche comme l'image */
+        /* Fond de l'application grise/blanche comme votre image */
         .stApp { background-color: #F3F5F4; }
         
         /* En-tête vert arrondi de la maquette */
@@ -46,7 +46,7 @@ st.markdown("""
 # Décoration de l'application (Haut de l'écran)
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Votre conseiller agricole et agrobusiness connecté</p></div>', unsafe_allow_html=True)
 
-# Base de données exhaustive des plantes demandées
+# Base de données exhaustive des plantes
 base_cultures = {
     "Tomate": {
         "famille": "Solanacées", "amis": "Carotte, Oignon, Salade, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
@@ -81,72 +81,63 @@ base_cultures = {
 }
 
 # ==========================================
-# SYSTÈME DE NAVIGATION PAR ONGLETS (STYLE MAQUETTE UI)
+# SYSTÈME DE NAVIGATION CORRIGÉ ET FLUIDE
 # ==========================================
-onglet = st.tabs(["📸 Scanner IA", "🌿 Catégories", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"])
+onglets_list = ["📸 Scanner IA", "🌿 Catégories", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"]
+tab1, tab2, tab3, tab4, tab5 = st.tabs(onglets_list)
 
-# --- ONGLET 1 : ANALYSE PHOTO CORRIGÉE ET STABLE ---
-with onglet:
+# --- ONGLET 1 : SCANNER IA ---
+with tab1:
     st.markdown('<div class="category-card"><h3>📸 Diagnostic de Santé Immédiat</h3>Prenez une photo claire d\'une feuille malade pour déclencher l\'analyse du serveur.</div>', unsafe_allow_html=True)
-    
     photo_fichier = st.file_uploader("Sélectionnez ou prenez votre photo ici :", type=["jpg", "png", "jpeg"])
     
     if photo_fichier is not None:
         st.image(photo_fichier, caption="Image importée avec succès", use_container_width=True)
-        
         with st.spinner("Analyse agronomique en cours..."):
             st.success("🧠 Analyse terminée ! Symptômes identifiés.")
-            
         culture_selection = st.selectbox("Confirmez la culture analysée :", list(base_cultures.keys()))
-        
-        # Rapport de diagnostic propre
         st.markdown(f"### 🩺 Rapport d'analyse : {culture_selection}")
         st.markdown('<div style="background-color:#EAFBF1; padding:12px; border-radius:10px; color:#1E5631;"><b>🌿 Traitement Naturel :</b> Pulvériser une solution à base d\'huile ou de purin de neem et de savon noir sous les feuilles.</div>', unsafe_allow_html=True)
-        st.markdown('<div style="background-color:#FFF9E6; padding:12px; border-radius:10px; color:#7F6000; margin-top:10px;"><b>🧪 Traitement Chimique :</b> Utiliser un fongicide ou insecticide homologué uniquement en cas de forte attaque. Respecter le délai avant récolte.</div>', unsafe_allow_html=True)
+        st.markdown('<div style="background-color:#FFF9E6; padding:12px; border-radius:10px; color:#7F6000; margin-top:10px;"><b>🧪 Traitement Chimique :</b> Utiliser un fongicide ou insecticide homologué uniquement en cas de forte attaque.</div>', unsafe_allow_html=True)
 
-# --- ONGLET 2 : LES CATÉGORIES & COMPAGNONNAGE ---
-with onglet:
+# --- ONGLET 2 : CATEGORIES & COMPAGNONNAGE ---
+with tab2:
     st.markdown('<div class="category-card"><h3>🌿 Compagnonnage des Plantes</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allow_html=True)
     choix_plante = st.selectbox("Sélectionnez une culture :", list(base_cultures.keys()), key="cat_sel")
-    
     if choix_plante:
         c = base_cultures[choix_plante]
         st.write(f"🧬 **Famille :** {c['famille']}")
         st.success(f"✅ **Bonnes associations (Amis) :** {c['amis']}")
         st.error(f"❌ **À ÉVITER à proximité (Ennemis) :** {c['ennemis']}")
 
-# --- ONGLET 3 : SUIVI DES CYCLES DE A À Z ---
-with onglet:
+# --- ONGLET 3 : SUIVI CYCLES ---
+with tab3:
     st.markdown('<div class="category-card"><h3>🚜 Étapes de Production en Images</h3>Les étapes clés de votre culture, de la pépinière jusqu\'au panier de récolte.</div>', unsafe_allow_html=True)
     choix_cycle = st.selectbox("Suivre le cycle de :", list(base_cultures.keys()), key="cycle_sel")
-    
     if choix_cycle:
         cc = base_cultures[choix_cycle]
         st.image("https://unsplash.com", caption=f"Itinéraire cultural optimal - {choix_cycle}", use_container_width=True)
         st.write(f"💡 **Conseil de rendement :** {cc['conseil']}")
         st.info(f"📈 **Rendement moyen attendu :** {cc['rendement']}")
 
-# --- ONGLET 4 : MODULE AGROBUSINESS ---
-with onglet:
+# --- ONGLET 4 : AGROBUSINESS ---
+with tab4:
     st.markdown('<div class="category-card"><h3>🏭 Volet Conservation & Transformation</h3>Valorisez vos récoltes pour augmenter vos revenus sur le marché de Bobo-Dioulasso.</div>', unsafe_allow_html=True)
     choix_biz = st.selectbox("Agrobusiness pour :", list(base_cultures.keys()), key="biz_sel")
-    
     if choix_biz:
         cb = base_cultures[choix_biz]
         st.markdown(f"#### 🏭 Fiche Agrobusiness - {choix_biz}")
         st.markdown(f'<div class="badge-biz">🧊 Méthodes de Conservation :</div><p>{cb["conservation"]}</p>', unsafe_allow_html=True)
         st.markdown(f'<div class="badge-biz" style="color:#0B4619; border-color:#2CB674;">🍯 Procédés de Transformation :</div><p>{cb["transformation"]}</p>', unsafe_allow_html=True)
 
-# --- ONGLET 5 : CALCULATEUR DE RENTABILITÉ ---
-with onglet:
+# --- ONGLET 5 : BUDGET ---
+with tab5:
     st.markdown('<div class="category-card"><h3>💰 Simulateur de Budget Évolué</h3>Estimez vos gains réels en fonction du nombre de pieds et des techniques appliquées.</div>', unsafe_allow_html=True)
     pl_fin = st.selectbox("Culture de la campagne :", list(base_cultures.keys()), key="fin_sel")
-    
     nbr_pieds = st.number_input("Nombre de pieds ou poquets cultivés :", min_value=1, value=200, step=50)
     prix_mkt = st.number_input("Prix de vente sur le marché (FCFA / Kilo) :", min_value=50, value=500, step=25)
     depenses = st.number_input("Total de vos charges engagées (FCFA) :", min_value=0, value=15000, step=1000)
     
-    # Calcul dynamique simple
     rendement_estime = nbr_pieds * 2.5
     ca_brut = rendement_estime * prix_mkt
     profit_net = ca_brut - depenses
