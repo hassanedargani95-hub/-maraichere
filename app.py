@@ -49,7 +49,7 @@ st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Votre
 # Base de données exhaustive des plantes
 base_cultures = {
     "Tomate": {
-        "famille": "Solanacées", "amis": "Carotte, Oignon, Salade, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
+        "famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
         "rendement": "3.5 kg / pied", "conseil": "Pailler le sol pour bloquer les champignons de terre.",
         "conservation": "Froid modéré (12°C). Séchage au soleil pour la longue conservation.",
         "transformation": "Concentré de tomate, purée pasteurisée en bouteille."
@@ -81,7 +81,7 @@ base_cultures = {
 }
 
 # ==========================================
-# SYSTÈME DE NAVIGATION CORRIGÉ ET FLUIDE
+# SYSTÈME DE NAVIGATION PORTEUR DE PROGRÈS
 # ==========================================
 onglets_list = ["📸 Scanner IA", "🌿 Catégories", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"]
 tab1, tab2, tab3, tab4, tab5 = st.tabs(onglets_list)
@@ -100,9 +100,9 @@ with tab1:
         st.markdown('<div style="background-color:#EAFBF1; padding:12px; border-radius:10px; color:#1E5631;"><b>🌿 Traitement Naturel :</b> Pulvériser une solution à base d\'huile ou de purin de neem et de savon noir sous les feuilles.</div>', unsafe_allow_html=True)
         st.markdown('<div style="background-color:#FFF9E6; padding:12px; border-radius:10px; color:#7F6000; margin-top:10px;"><b>🧪 Traitement Chimique :</b> Utiliser un fongicide ou insecticide homologué uniquement en cas de forte attaque.</div>', unsafe_allow_html=True)
 
-# --- ONGLET 2 : CATEGORIES & COMPAGNONNAGE ---
+# --- ONGLET 2 : CATEGORIES & ASSOCIATION POSSIBLE (MODIFIÉ) ---
 with tab2:
-    st.markdown('<div class="category-card"><h3>🌿 Compagnonnage des Plantes</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="category-card"><h3>🌿 Association possible</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allow_html=True)
     choix_plante = st.selectbox("Sélectionnez une culture :", list(base_cultures.keys()), key="cat_sel")
     if choix_plante:
         c = base_cultures[choix_plante]
@@ -116,8 +116,12 @@ with tab3:
     choix_cycle = st.selectbox("Suivre le cycle de :", list(base_cultures.keys()), key="cycle_sel")
     if choix_cycle:
         cc = base_cultures[choix_cycle]
-        st.image("https://unsplash.com", caption=f"Itinéraire cultural optimal - {choix_cycle}", use_container_width=True)
-        st.write(f"💡 **Conseil de rendement :** {cc['conseil']}")
+        st.markdown(f"#### 📅 Itinéraire Cultural – {choix_cycle}")
+        st.markdown("🌱 **Étape 1 - Pépinière :** Semis protégés, arrosage régulier fin matin/soir.")
+        st.markdown("📐 **Étape 2 - Repiquage :** Respecter les distances, creuser les poquets à la fraîche.")
+        st.markdown("✂️ **Étape 3 - Entretien :** Pailler le sol pour conserver l'humidité et étouffer les herbes.")
+        st.markdown("🧺 **Étape 4 - Récolte :** Cueillette au stade de maturité optimal pour le marché.")
+        st.markdown(f"💡 **Règle d'or :** {cc['conseil']}")
         st.info(f"📈 **Rendement moyen attendu :** {cc['rendement']}")
 
 # --- ONGLET 4 : AGROBUSINESS ---
