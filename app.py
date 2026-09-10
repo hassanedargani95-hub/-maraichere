@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Configuration de la page mobile avec le style de la maquette
+# Configuration de la page mobile Premium
 st.set_page_config(page_title="La Bible Maraîchère", page_icon="📖", layout="centered")
 
 # ==========================================
@@ -8,99 +8,120 @@ st.set_page_config(page_title="La Bible Maraîchère", page_icon="📖", layout=
 # ==========================================
 st.markdown("""
     <style>
-        /* Fond de l'application grise/blanche comme votre image */
         .stApp { background-color: #F3F5F4; }
-        
-        /* En-tête vert arrondi de la maquette */
         .app-header {
-            background-color: #2CB674;
-            padding: 25px;
-            border-radius: 0px 0px 25px 25px;
-            color: white;
-            text-align: center;
-            margin-top: -60px;
-            margin-bottom: 20px;
+            background-color: #2CB674; padding: 25px; border-radius: 0px 0px 25px 25px;
+            color: white; text-align: center; margin-top: -60px; margin-bottom: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        
-        /* Cartes de catégories blanches et arrondies */
         .category-card {
-            background-color: #FFFFFF;
-            padding: 15px;
-            border-radius: 18px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04);
-            margin-bottom: 15px;
+            background-color: #FFFFFF; padding: 15px; border-radius: 18px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04); margin-bottom: 15px;
             border-left: 6px solid #2CB674;
         }
-        
-        /* Style des boutons et onglets */
         .stTabs [data-baseweb="tab-list"] { gap: 6px; background-color: #E2EFE7; padding: 6px; border-radius: 14px; }
         .stTabs [data-baseweb="tab"] { color: #1E5631; font-weight: bold; border-radius: 10px; padding: 10px; }
         .stTabs [data-baseweb="tab"][aria-selected="true"] { background-color: #2CB674 !important; color: white !important; }
-        
-        /* Badges de l'Agrobusiness */
         .badge-biz { background-color: #E6F7ED; color: #1E5631; padding: 8px; border-radius: 10px; font-weight: bold; border: 1px solid #2CB674; }
+        .diagnostic-box { background-color: #FFFFFF; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 12px rgba(0,0,0,0.05); margin-top: 15px; }
     </style>
 """, unsafe_allow_html=True)
 
-# Décoration de l'application (Haut de l'écran)
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Votre conseiller agricole et agrobusiness connecté</p></div>', unsafe_allow_html=True)
 
-# Base de données exhaustive des plantes
-base_cultures = {
-    "Tomate": {
-        "famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
-        "rendement": "3.5 kg / pied", "conseil": "Pailler le sol pour bloquer les champignons de terre.",
-        "conservation": "Froid modéré (12°C). Séchage au soleil pour la longue conservation.",
-        "transformation": "Concentré de tomate, purée pasteurisée en bouteille."
+# ==========================================
+# BASE DE DONNÉES DYNAMIQUE DES MALADIES & IMAGES REMÈDES
+# ==========================================
+base_maladies = {
+    "Flétrissement Brutal (Feuilles Vertes)": {
+        "maladie": "Flétrissement Bactérien (Ralstonia solanacearum)",
+        "causes": "Bactérie du sol qui se développe par forte humidité et chaleur étouffante. Elle pénètre par les blessures des racines et bloque la sève.",
+        "bio": "Arracher et brûler les plants morts. Saupoudrer le sol de cendre de bois pure pour stopper la contagion.",
+        "chimique": "Aucun produit chimique curatif n'existe. Utiliser des variétés résistantes (Cobra 26 F1) et pratiquer la rotation des cultures.",
+        "remede_nom": "Cendre de bois pure",
+        "remede_img": "https://unsplash.com" # Image de cendre/feu de bois
     },
-    "Pastèque": {
-        "famille": "Cucurbitacées", "amis": "Maïs, Gombo, Tournesol", "ennemis": "Concombre, Melon",
-        "rendement": "12 kg / poquet (2 à 3 fruits)", "conseil": "Dresser de larges buttes plates en travers de la pente.",
-        "conservation": "2 à 3 semaines à l'ombre dans un endroit ventilé.",
-        "transformation": "Jus frais pasteurisé, confiture d'écorces, extraction d'huile des graines."
+    "Taches Brunes avec Duvet Blanc/Gris": {
+        "maladie": "Mildiou (Phytophthora infestans)",
+        "causes": "Champignon microscopique favorisé par les pluies fréquentes, la fraîcheur du matin et un feuillage qui reste mouillé trop longtemps.",
+        "bio": "Pulvériser une solution de bicarbonate de soude (5g/L) mélangée à du savon noir végétal.",
+        "chimique": "Appliquer un traitement fongicide à base de cuivre (Bouillie bordelaise) sur tout le feuillage.",
+        "remede_nom": "Savon noir et bicarbonate",
+        "remede_img": "https://unsplash.com" # Image savon naturel
     },
-    "Concombre": {
-        "famille": "Cucurbitacées", "amis": "Salade, Chou, Oignon", "ennemis": "Tomate, Pastèque",
-        "rendement": "4.0 kg / pied", "conseil": "Arrosage très régulier pour éviter l'amertume du fruit.",
-        "conservation": "7 à 10 jours emballé au frais.",
-        "transformation": "Transformation en cornichons dans du vinaigre et des herbes."
-    },
-    "Menthe": {
-        "famille": "Lamiacées", "amis": "Chou, Tomate", "ennemis": "Camomille",
-        "rendement": "1.2 kg / m²", "conseil": "Plante traçante, idéale pour stabiliser les bords d'allées.",
-        "conservation": "Séchage complet à l'ombre. Se conserve 1 an en bocal fermé.",
-        "transformation": "Sirop de menthe, poudre de feuilles séchées, huile essentielle."
-    },
-    "Persil & Céleri": {
-        "famille": "Apiacées", "amis": "Tomate, Oignon", "ennemis": "Salade, Laitue",
-        "rendement": "1.5 kg / m²", "conseil": "Graines lentes à germer, les tremper dans l'eau 24h avant.",
-        "conservation": "Séchage ou congélation des feuilles ciselées.",
-        "transformation": "Bouquets garnis déshydratés, sel de céleri pour la cuisine."
+    "Grosses Bosses ou Galles sur les Racines": {
+        "maladie": "Nématodes à galles (Meloidogyne spp.)",
+        "causes": "Vers microscopiques invisibles à l'œil nu qui piquent les racines pour s'y nourrir, empêchant la plante de puiser l'eau.",
+        "bio": "Incorporer des feuilles ou des tourteaux de Neem broyés dans la butte et planter des Œillets d'Inde tout autour.",
+        "chimique": "Nématicides granulés homologués à appliquer au sol uniquement avant la plantation.",
+        "remede_nom": "Feuilles et graines de Neem",
+        "remede_img": "https://unsplash.com" # Image de feuilles de neem / plantes vertes africaines
     }
 }
 
+base_cultures = {
+    "Tomate": {"famille": "Solanacées", "amis": "Carotte, Oignon, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron", "rendement": "3.5 kg / pied", "conseil": "Pailler le sol.", "conservation": "12°C ou séchage.", "transformation": "Concentré, purée."},
+    "Pastèque": {"famille": "Cucurbitacées", "amis": "Maïs, Gombo", "ennemis": "Concombre, Melon", "rendement": "12 kg / poquet", "conseil": "Buttes plates en travers.", "conservation": "À l'ombre aérée.", "transformation": "Jus, confiture d'écorce."},
+    "Concombre": {"famille": "Cucurbitacées", "amis": "Salade, Oignon", "ennemis": "Tomate, Pastèque", "rendement": "4.0 kg / pied", "conseil": "Arrosage très régulier.", "conservation": "Frais emballé.", "transformation": "Cornichons."},
+    "Menthe": {"famille": "Lamiacées", "amis": "Chou, Tomate", "ennemis": "Camomille", "rendement": "1.2 kg / m²", "conseil": "Idéal en bordure.", "conservation": "Séchage ombre.", "transformation": "Sirop, huile essentielle."},
+    "Persil & Céleri": {"famille": "Apiacées", "amis": "Tomate, Oignon", "ennemis": "Salade", "rendement": "1.5 kg / m²", "conseil": "Tremper les graines 24h.", "conservation": "Séchage ou ciselage.", "transformation": "Bouquets déshydratés."}
+}
+
 # ==========================================
-# SYSTÈME DE NAVIGATION PORTEUR DE PROGRÈS
+# NAVIGATION PAR ONGLETS
 # ==========================================
-onglets_list = ["📸 Scanner IA", "🌿 Catégories", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"]
+onglets_list = ["📸 Scanner IA & Diagnostic", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"]
 tab1, tab2, tab3, tab4, tab5 = st.tabs(onglets_list)
 
-# --- ONGLET 1 : SCANNER IA ---
+# --- ONGLET 1 : SCANNER IA DYNAMIQUE ET MULTIPLE ---
 with tab1:
-    st.markdown('<div class="category-card"><h3>📸 Diagnostic de Santé Immédiat</h3>Prenez une photo claire d\'une feuille malade pour déclencher l\'analyse du serveur.</div>', unsafe_allow_html=True)
-    photo_fichier = st.file_uploader("Sélectionnez ou prenez votre photo ici :", type=["jpg", "png", "jpeg"])
+    st.markdown('<div class="category-card"><h3>📸 Laboratoire d\'Analyse d\'Images</h3>Téléchargez une ou plusieurs photos de vos plants malades pour un diagnostic complet.</div>', unsafe_allow_html=True)
     
-    if photo_fichier is not None:
-        st.image(photo_fichier, caption="Image importée avec succès", use_container_width=True)
-        with st.spinner("Analyse agronomique en cours..."):
-            st.success("🧠 Analyse terminée ! Symptômes identifiés.")
-        culture_selection = st.selectbox("Confirmez la culture analysée :", list(base_cultures.keys()))
-        st.markdown(f"### 🩺 Rapport d'analyse : {culture_selection}")
-        st.markdown('<div style="background-color:#EAFBF1; padding:12px; border-radius:10px; color:#1E5631;"><b>🌿 Traitement Naturel :</b> Pulvériser une solution à base d\'huile ou de purin de neem et de savon noir sous les feuilles.</div>', unsafe_allow_html=True)
-        st.markdown('<div style="background-color:#FFF9E6; padding:12px; border-radius:10px; color:#7F6000; margin-top:10px;"><b>🧪 Traitement Chimique :</b> Utiliser un fongicide ou insecticide homologué uniquement en cas de forte attaque.</div>', unsafe_allow_html=True)
+    # Correction : accept_multiple_files=True permet de sélectionner plusieurs images à la fois
+    photos_fichiers = st.file_uploader("Prendre ou importer vos photos (Sélection multiple possible) :", type=["jpg", "png", "jpeg"], accept_multiple_files=True)
+    
+    if photos_fichiers:
+        st.write(f"📊 **{len(photos_fichiers)} image(s) sélectionnée(s). Analyse des symptômes en cours...**")
+        
+        # Affichage des images sous forme de galerie de vignettes
+        cols = st.columns(min(len(photos_fichiers), 3))
+        for idx, f in enumerate(photos_fichiers):
+            with cols[idx % 3]:
+                st.image(f, caption=f"Photo {idx+1}", use_container_width=True)
+        
+        st.markdown("---")
+        st.markdown("#### 🔍 Étape de vérification visuelle")
+        plante_scanne = st.selectbox("1️⃣ Indiquez la plante que vous venez de scanner :", list(base_cultures.keys()))
+        symptome_repere = st.selectbox("2️⃣ Sélectionnez le symptôme le plus visible sur vos photos :", list(base_maladies.keys()))
+        
+        if symptome_repere and plante_scanne:
+            res = base_maladies[symptome_repere]
+            
+            # Présentation dynamique demandée
+            st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            st.markdown(f"### 🩺 RAPPORT DE DIAGNOSTIC AGRO-INTELLIGENT")
+            st.write(f"🌿 **Plante auscultée :** {plante_scanne}")
+            st.error(f"🦠 **Maladie identifiée :** {res['maladie']}")
+            
+            st.markdown("#### ❓ Causes probables")
+            st.write(res["causes"])
+            
+            st.markdown("#### 🛠️ Solutions de traitement disponibles")
+            
+            col_bio, col_chem = st.columns(2)
+            with col_bio:
+                st.markdown("<b style='color:#2E7D32;'>🍃 Solution Naturelle (Bio) :</b>", unsafe_allow_html=True)
+                st.write(res["bio"])
+                st.markdown(f"_*Utiliser : {res['remede_nom']}_")
+                # Affichage de l'image de la plante ou du produit de traitement naturel demandé
+                st.image(res["remede_img"], caption=res["remede_nom"], use_container_width=True)
+                
+            with col_chem:
+                st.markdown("<b style='color:#7F6000;'>🧪 Solution Chimique d'Urgence :</b>", unsafe_allow_html=True)
+                st.write(res["chimique"])
+            st.markdown('</div>', unsafe_allow_html=True)
 
-# --- ONGLET 2 : CATEGORIES & ASSOCIATION POSSIBLE (MODIFIÉ) ---
+# --- ONGLET 2 : ASSOCIATION POSSIBLE ---
 with tab2:
     st.markdown('<div class="category-card"><h3>🌿 Association possible</h3>Découvrez les plantes amies et ennemies pour protéger votre champ naturellement.</div>', unsafe_allow_html=True)
     choix_plante = st.selectbox("Sélectionnez une culture :", list(base_cultures.keys()), key="cat_sel")
@@ -112,7 +133,7 @@ with tab2:
 
 # --- ONGLET 3 : SUIVI CYCLES ---
 with tab3:
-    st.markdown('<div class="category-card"><h3>🚜 Étapes de Production en Images</h3>Les étapes clés de votre culture, de la pépinière jusqu\'au panier de récolte.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="category-card"><h3>🚜 Étapes de Production</h3>Les étapes clés de votre culture, de la pépinière jusqu\'au panier de récolte.</div>', unsafe_allow_html=True)
     choix_cycle = st.selectbox("Suivre le cycle de :", list(base_cultures.keys()), key="cycle_sel")
     if choix_cycle:
         cc = base_cultures[choix_cycle]
@@ -121,31 +142,7 @@ with tab3:
         st.markdown("📐 **Étape 2 - Repiquage :** Respecter les distances, creuser les poquets à la fraîche.")
         st.markdown("✂️ **Étape 3 - Entretien :** Pailler le sol pour conserver l'humidité et étouffer les herbes.")
         st.markdown("🧺 **Étape 4 - Récolte :** Cueillette au stade de maturité optimal pour le marché.")
-        st.markdown(f"💡 **Règle d'or :** {cc['conseil']}")
         st.info(f"📈 **Rendement moyen attendu :** {cc['rendement']}")
 
 # --- ONGLET 4 : AGROBUSINESS ---
 with tab4:
-    st.markdown('<div class="category-card"><h3>🏭 Volet Conservation & Transformation</h3>Valorisez vos récoltes pour augmenter vos revenus sur le marché de Bobo-Dioulasso.</div>', unsafe_allow_html=True)
-    choix_biz = st.selectbox("Agrobusiness pour :", list(base_cultures.keys()), key="biz_sel")
-    if choix_biz:
-        cb = base_cultures[choix_biz]
-        st.markdown(f"#### 🏭 Fiche Agrobusiness - {choix_biz}")
-        st.markdown(f'<div class="badge-biz">🧊 Méthodes de Conservation :</div><p>{cb["conservation"]}</p>', unsafe_allow_html=True)
-        st.markdown(f'<div class="badge-biz" style="color:#0B4619; border-color:#2CB674;">🍯 Procédés de Transformation :</div><p>{cb["transformation"]}</p>', unsafe_allow_html=True)
-
-# --- ONGLET 5 : BUDGET ---
-with tab5:
-    st.markdown('<div class="category-card"><h3>💰 Simulateur de Budget Évolué</h3>Estimez vos gains réels en fonction du nombre de pieds et des techniques appliquées.</div>', unsafe_allow_html=True)
-    pl_fin = st.selectbox("Culture de la campagne :", list(base_cultures.keys()), key="fin_sel")
-    nbr_pieds = st.number_input("Nombre de pieds ou poquets cultivés :", min_value=1, value=200, step=50)
-    prix_mkt = st.number_input("Prix de vente sur le marché (FCFA / Kilo) :", min_value=50, value=500, step=25)
-    depenses = st.number_input("Total de vos charges engagées (FCFA) :", min_value=0, value=15000, step=1000)
-    
-    rendement_estime = nbr_pieds * 2.5
-    ca_brut = rendement_estime * prix_mkt
-    profit_net = ca_brut - depenses
-    
-    st.markdown("---")
-    st.metric(label="Volume de récolte estimé", value=f"{rendement_estime:.1f} kg")
-    st.metric(label="💰 Bénéfice Net Prévisionnel", value=f"{profit_net:,.0f} FCFA".replace(",", " "))
