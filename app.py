@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration de la page mobile Premium
+# Configuration de la page mobile Premium Haute Performance
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # ==========================================
@@ -16,7 +16,7 @@ if API_KEY_SECRET:
 else:
     modele_ia = None
 
-# Styles graphiques professionnels "Vert Nature"
+# Styles graphiques professionnels de la maquette UI
 st.markdown("""
     <style>
         .stApp { background-color: #F3F5F4; }
@@ -25,129 +25,162 @@ st.markdown("""
             color: white; text-align: center; margin-top: -60px; margin-bottom: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+        .category-card {
+            background-color: #FFFFFF; padding: 15px; border-radius: 18px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04); margin-bottom: 15px;
+            border-left: 6px solid #2CB674;
+        }
         .diagnostic-box { background-color: #FFFFFF; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 12px rgba(0,0,0,0.05); margin-top: 15px; }
-        .doc-section { background-color: #FFFFFF; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 5px solid #2CB674; }
+        .badge-methode { padding: 6px 14px; border-radius: 20px; font-weight: bold; color: white; display: inline-block; margin-bottom: 10px; }
     </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Intelligence Artificielle connectée de terrain</p></div>', unsafe_allow_html=True)
 
-# Base de données pour les onglets conseils
-base_cultures = {
-    "Tomate": {"famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic", "ennemis": "Pomme de terre, Poivron"},
-    "Pastèque": {"famille": "Cucurbitacées", "amis": "Maïs, Gombo, Tournesol", "ennemis": "Concombre, Melon"},
-    "Concombre": {"famille": "Cucurbitacées", "amis": "Salade, Chou, Oignon", "ennemis": "Tomate, Pastèque"}
+# ==========================================
+# BASE DE DONNÉES ENCYCLOPÉDIQUE EXHAUSTIVE
+# ==========================================
+base_encyclopedie = {
+    "Tomate": {
+        "famille": "Solanacées",
+        "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde",
+        "ennemis": "Pomme de terre, Poivron, Aubergine",
+        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "21 à 25 jours (jusqu'à obtenir 4 vraies feuilles).",
+        "cycle_total": "75 à 90 jours après le repiquage pour les premières cueillettes.",
+        "entretien": "Installer des tuteurs dès la 2e semaine, pailler le sol, et tailler obligatoirement les gourmands aux aisselles.",
+        "conseil": "Arrosage régulier au pied sans jamais mouiller les feuilles pour bloquer le mildiou."
+    },
+    "Pastèque": {
+        "famille": "Cucurbitacées",
+        "amis": "Maïs, Gombo, Tournesol, Radis",
+        "ennemis": "Concombre, Melon, Courgette",
+        "methode": "🎯 SEMIS DIRECT AU CHAMP",
+        "badge_couleur": "#C62828",
+        "duree_pepiniere": "Zéro jour (Déteste le repiquage car sa racine pivotante se brise).",
+        "cycle_total": "80 à 95 jours après le semis direct.",
+        "entretien": "Dresser de larges buttes plates en travers de la pente. Mettre 3 graines par poquet, puis ne laisser que le plus fort après 15 jours.",
+        "conseil": "Pincer la tige principale après la 4e feuille pour forcer le développement des gros fruits."
+    },
+    "Gombo": {
+        "famille": "Malvacées",
+        "amis": "Piment, Aubergine, Niébé, Pastèque",
+        "ennemis": "Oignon, Tomate (partagent une forte sensibilité aux nématodes)",
+        "methode": "🎯 SEMIS DIRECT AU CHAMP",
+        "badge_couleur": "#C62828",
+        "duree_pepiniere": "Zéro jour. Semis direct en poquets de 3 graines.",
+        "cycle_total": "55 à 65 jours (Croissance très rapide).",
+        "entretien": "Buttage des pieds à la houe un mois après le semis pour renforcer l'ancrage contre les vents forts.",
+        "conseil": "Cueillir les capsules tous les 2 jours lorsqu'elles sont tendres sous l'ongle."
+    },
+    "Oignon": {
+        "famille": "Alliacées",
+        "amis": "Carotte, Laitue, Tomate, Piment",
+        "ennemis": "Gombo, Haricot, Pois",
+        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "45 à 50 jours en pépinière meuble (jusqu'à la grosseur d'un crayon).",
+        "cycle_total": "100 à 120 jours après le repiquage.",
+        "entretien": "Désherbage manuel très fréquent. Couper le tiers supérieur des feuilles (habillage) au repiquage.",
+        "conseil": "Éviter absolument le fumier frais juste avant plantation pour empêcher les bulbes de pourrir."
+    },
+    "Piment / Poivron": {
+        "famille": "Solanacées",
+        "amis": "Oignon, Ail, Gombo, Carotte",
+        "ennemis": "Tomate, Aubergine",
+        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "25 à 30 jours sous abri moustiquaire.",
+        "cycle_total": "80 à 100 jours après repiquage.",
+        "entretien": "Apport massif de potassium (cendre) à la floraison. Pailler pour protéger les racines du soleil.",
+        "conseil": "Très sensible à l'anthracnose (taches noires sur fruits) par temps de pluie humide."
+    },
+    "Concombre / Melon / Courgette": {
+        "famille": "Cucurbitacées",
+        "amis": "Salade, Chou, Oignon, Haricot",
+        "ennemis": "Tomate, Pomme de terre, Pastèque",
+        "methode": "🎯 SEMIS DIRECT (OU GODETS DE 12 JOURS)",
+        "badge_couleur": "#C62828",
+        "duree_pepiniere": "Semis direct ou 10-12 jours maximum en petits godets individuels.",
+        "cycle_total": "50 à 65 jours selon les variétés.",
+        "entretien": "Installer des treillages ou tuteurs pour faire grimper les fruits si l'espace au sol est limité.",
+        "conseil": "Arrosage quotidien abondant. Le moindre stress hydrique rend le légume très amer au goût."
+    },
+    "Chou (Pommé ou de Chine)": {
+        "famille": "Brassicacées",
+        "amis": "Laitue, Oignon, Pomme de terre, Céleri",
+        "ennemis": "Fraise, Ail",
+        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "30 jours. Protéger impérativement contre les chenilles avec un filet fin dès la levée.",
+        "cycle_total": "85 à 105 jours après repiquage.",
+        "entretien": "Plante très gourmande en azote. Demande un apport régulier de fientes de volailles bien sèches.",
+        "conseil": "Maintenir le sol humide pour obtenir une pomme tendre, compacte et douce."
+    },
+    "Laitue / Salade / Amarante": {
+        "famille": "Astéracées",
+        "amis": "Chou, Carotte, Oignon, Tomate (profite de son ombre)",
+        "ennemis": "Persil, Céleri",
+        "methode": "🌱 PÉPINIÈRE OU SEMIS EN LIGNE SERRÉE",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "15 à 18 jours. Les graines doivent être à peine couvertes de sable fin.",
+        "cycle_total": "30 à 45 jours (Cycle ultra-court, idéal pour intercaler).",
+        "entretien": "Sarclage délicat. Demande une terre fraîche et un arrosage fin sous forme de pluie.",
+        "conseil": "Récolter tôt le matin pour garder les feuilles craquantes et éviter le flétrissement."
+    },
+    "Carotte / Betterave / Radis": {
+        "famille": "Apiacées",
+        "amis": "Oignon, Poireau, Laitue, Tomate",
+        "ennemis": "Aneth, Fenouil",
+        "methode": "🎯 SEMIS DIRECT EN LIGNES SERRÉES",
+        "badge_couleur": "#C62828",
+        "duree_pepiniere": "Zéro jour (Le repiquage déforme la racine, la rendant fourchue et invendable).",
+        "cycle_total": "70 à 90 jours (25 jours pour les radis roses).",
+        "entretien": "Éclaircissage rigoureux 20 jours après levée pour laisser 5 cm d'espace entre les racines.",
+        "conseil": "Exige un sol profondément meuble, sableux et totalement débarrassé des cailloux."
+    },
+    "Menthe / Persil / Céleri": {
+        "famille": "Lamiacées & Apiacées (Aromatiques)",
+        "amis": "Tomate, Chou, Oignon",
+        "ennemis": "Salade, Laitue",
+        "methode": "🌱 PÉPINIÈRE OU BOUTURAGE (MENTHE)",
+        "badge_couleur": "#2E7D32",
+        "duree_pepiniere": "Levée très lente (jusqu'à 21 jours pour le persil). Tremper les graines 24h avant.",
+        "cycle_total": "Récolte continue par coupe des tiges dès le 60e jour.",
+        "entretien": "La menthe se propage par lianes rampantes (stolons) et peut être plantée pour fixer les bordures.",
+        "conseil": "Excellentes cultures pour l'agrobusiness (séchage à l'ombre et revente en herbes sèches)."
+    },
+    "Haricot vert / Niébé": {
+        "famille": "Fabacées (Légumineuses)",
+        "amis": "Maïs, Tomate, Aubergine, Pomme de terre",
+        "ennemis": "Oignon, Ail, Échalote",
+        "methode": "🎯 SEMIS DIRECT AU CHAMP",
+        "badge_couleur": "#C62828",
+        "duree_pepiniere": "Zéro jour. Semis direct en poquets peu profonds.",
+        "cycle_total": "45 à 60 jours.",
+        "entretien": "Binage léger. Cette plante fabrique ses propres nodules pour fertiliser la terre en azote.",
+        "conseil": "Idéal pour restructurer un sol fatigué après une grosse culture de Solanacées."
+    }
 }
 
-# Navigation par onglets (Ajout du module Documentation)
-onglets_list = ["📸 VRAI Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "📚 Documentation"]
-tab1, tab2, tab3, tab4 = st.tabs(onglets_list)
+# Navigation par onglets
+onglets_list = ["📸 VRAI Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles"]
+tab1, tab2, tab3 = st.tabs(onglets_list)
 
-# --- ONGLET 1 : RECONNAISSANCE IA ---
+# --- ONGLET 1 : RECONNAISSANCE IA DYNAMIQUE ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
+    
+    # Prise de vue unique pour stabiliser le réseau mobile LTE et empêcher le bug de chargement
     fichier_photo = st.file_uploader("Prendre ou charger une photo de votre culture :", type=["jpg", "png", "jpeg"], key="photo_unique_champ")
     
     if fichier_photo is not None:
         st.success("📊 Image reçue avec succès.")
         image_pil = Image.open(fichier_photo)
-        st.markdown("##### 🎯 Image sélectionnée pour le scan :")
-        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", width=300)
+        st.image(image_pil, caption=f"Fichier prêt : {fichier_photo.name}", width=280)
         
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
             if modele_ia is None:
-                st.error("Erreur de configuration : Clé API manquante.")
+                st.error("Erreur de configuration de la clé API.")
             else:
-                with st.spinner("L'IA Cloud analyse les formes et les symptômes de votre image..."):
-                    try:
-                        consigne_prompt = """
-                        Analyse cette photo de culture maraîchère et fournis une réponse structurée :
-                        1. 🎯 NOM DE LA PLANTE : Précise quelle plante ou fruits sont présents (ex: Piment, Betterave, Tomate, Pastèque).
-                        2. 🦠 NOM DE LA MALADIE OU DU SYMPTÔME : Identifie l'attaque ou la carence visible.
-                        3. ❓ CAUSES PROBABLES : Explique pourquoi ce problème est apparu.
-                        4. 🍃 TRAITEMENT NATUREL ET PROTOCOLE (BIO) : Donne une recette claire à base de plantes locales (Neem, Ail, Cendre, Piment) ou bicarbonate.
-                        5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit homologué avec le Délai Avant Récolte (DAR).
-                        """
-                        reponse_ia = modele_ia.generate_content([consigne_prompt, image_pil])
-                        st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
-                        st.markdown("<h3 style='color:#0B4619; text-align:center;'>📋 RAPPORT DE DIAGNOSTIC AUTOMATIQUE CLOUD</h3>", unsafe_allow_html=True)
-                        st.write(reponse_ia.text)
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    except Exception as e:
-                        st.error(f"Erreur du serveur : {str(e)}")
-
-# --- ONGLET 2 : ASSOCIATIONS ---
-with tab2:
-    st.markdown('### 🌿 Association possible')
-    choix_plante = st.selectbox("Sélectionnez une culture :", list(base_cultures.keys()), key="cat_sel")
-    if choix_plante:
-        c = base_cultures[choix_plante]
-        st.success(f"✅ **Bonnes associations (Amis) :** {c['amis']}")
-        st.error(f"❌ **À ÉVITER à proximité (Ennemis) :** {c['ennemis']}")
-
-# --- ONGLET 3 : SUIVI CYCLES ---
-with tab3:
-    st.markdown('### 🚜 Étapes de Production')
-    st.write("Suivi technique précis du calendrier cultural de la pépinière à la récolte.")
-
-# --- ONGLET 4 : EXHAUSTIF - MODULE DOCUMENTATION (NOUVEAU) ---
-with tab4:
-    st.markdown('### 📚 Encyclopédie Officielle du Maraîchage')
-    st.write("Retrouvez ici la classification complète de toutes les plantes cultivées utilisables dans l'application.")
-    
-    with st.expander("🍅 1. Les Légumes-Fruits (Solanacées & Cucurbitacées)"):
-        st.markdown("""
-        <div class="doc-section">
-            <b>Cultures à haute valeur marchande, exigeantes en eau et compost :</b><br><br>
-            • <b>Tomate</b> : Sensible au flétrissement, demande un tuteurage et un paillage rigoureux.<br>
-            • <b>Pastèque</b> : Rampe sur le sol, exige de larges buttes plates et beaucoup d'espace.<br>
-            • <b>Piment & Poivron</b> : Très sensibles à l'anthracnose par temps de pluie.<br>
-            • <b>Aubergine</b> : Variétés locales amères ou grosses violettes, cycle long.<br>
-            • <b>Concombre, Melon & Courgette</b> : Demandent un arrosage régulier au pied pour éviter l'amertume.
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with st.expander("🥬 2. Les Légumes-Feuilles (Brassicacées & Astéracées)"):
-        st.markdown("""
-        <div class="doc-section">
-            <b>Cultures à cycle court, idéales pour des revenus rapides :</b><br><br>
-            • <b>Chou</b> (Pommé ou de Chine) : Très gourmand en azote (fientes de poules de votre poulailler).<br>
-            • <b>Laitue / Salade</b> : Préfère un ombrage léger aux heures chaudes.<br>
-            • <b>Épinard & Amarante (Boroussou)</b> : Excellente repousse après coupe.<br>
-            • <b>Oseille de Guinée (Bissap)</b> : Résistante, cultivée pour ses feuilles vertes.<br>
-            • <b>Moringa</b> : Planté en haies denses pour la récolte continue de feuilles riches.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with st.expander("🥕 3. Les Légumes-Racines & Bulbes (Alliacées & Apiacées)"):
-        st.markdown("""
-        <div class="doc-section">
-            <b>Plantes souterraines exigeant un sol très meuble travaillé en profondeur :</b><br><br>
-            • <b>Oignon</b> (Violet de Galmi, Prema) : Éviter le fumier frais (risque de pourriture des bulbes).<br>
-            • <b>Ail</b> : Excellent répulsif naturel à planter en bordure.<br>
-            • <b>Carotte & Betterave</b> : Demandent un sol sableux sans cailloux pour des racines droites.<br>
-            • <b>Radis</b> (Rose ou Noir) & <b>Navet</b> : Cycle ultra-rapide (20 à 25 jours).<br>
-            • <b>Patate douce</b> : Cultivée pour ses tubercules et ses lianes comestibles.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with st.expander("🌿 4. Les Plantes Aromatiques & Condiments"):
-        st.markdown("""
-        <div class="doc-section">
-            <b>Herbes à forte valeur ajoutée idéales pour la transformation et l'agrobusiness :</b><br><br>
-            • <b>Menthe</b> : Plante traçante envahissante, idéale pour fixer la terre des allées de passage.<br>
-            • <b>Persil & Céleri</b> : Germination lente (jusqu'à 3 semaines), tremper les graines avant semis.<br>
-            • <b>Basilic</b> : Le meilleur protecteur de la tomate contre les mouches piqueuses.<br>
-            • <b>Coriandre & Ciboulette</b> : Très demandées sur les marchés urbains.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with st.expander("🫘 5. Les Légumes-Gousses (Légumineuses)"):
-        st.markdown("""
-        <div class="doc-section">
-            <b>Plantes miracles qui captent l'azote de l'air pour enrichir vos buttes gratuitement :</b><br><br>
-            • <b>Haricot vert</b> : Cycle rapide, forte demande commerciale.<br>
-            • <b>Niébé (Haricot local)</b> : Très résistant à la sécheresse, excellent précédent cultural.<br>
-            • <b>Pois de terre (Voandzou)</b> : S'adapte parfaitement aux sols pauvres.
-        </div>
-        """, unsafe_allow_html=True)
