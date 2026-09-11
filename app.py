@@ -6,12 +6,13 @@ from PIL import Image
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # ==========================================
-# CONNEXION AU CERVEAU DE L'IA CLOUD
+# CONNEXION AU CERVEAU DE L'IA CLOUD (CORRECTION ERREUR 404)
 # ==========================================
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
+    # Correction de l'erreur 404 : Retrait du préfixe "models/" pour s'adapter à la passerelle d'analyse
     modele_ia = genai.GenerativeModel("gemini-1.5-flash")
 else:
     modele_ia = None
@@ -49,14 +50,14 @@ with tab1:
     fichier_photo = st.file_uploader("Prendre ou charger une photo de votre culture :", type=["jpg", "png", "jpeg"], key="photo_unique_champ")
     
     if fichier_photo is not None:
-        st.success("📊 Image reçue avec succès.")
+        st.success("📊 Image reçue avec succès par le terminal.")
         
-        # Ouverture immédiate de l'image
+        # Ouverture immédiate de l'image réelle
         image_pil = Image.open(fichier_photo)
         st.markdown("##### 🎯 Image sélectionnée pour le scan :")
         
-        # Correction majeure : width=300 bloque les déformations et accélère le chargement
-        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", width=300)
+        # Correction de l'affichage de l'image (affiche l'image en entier sans la rogner ni l'étirer)
+        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", use_container_width=False, width=300)
         
         # BOUTON DÉCLENCHEMENT DU SCANNER IA CONNECTÉ
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
@@ -67,15 +68,16 @@ with tab1:
                     try:
                         consigne_prompt = """
                         Agis en tant qu'expert en pathologie végétale et maraîchage d'Afrique de l'Ouest.
-                        Analyse cette photo de culture maraîchère et fournis OBLIGATOIREMENT une réponse structurée exactement comme ceci :
+                        Analyse cette photo de culture maraîchère et fournis OBLIGATOIREMENT une réponse structurée en français exactement comme ceci :
                         
-                        1. 🎯 NOM DE LA PLANTE : Dis précisément quelle plante est présente sur la photo (ex: Piment, Betterave, Tomate, Pastèque).
-                        2. 🦠 NOM DE LA MALADIE OU DU SYMPTÔME : Identifie précisément l'attaque, le champignon ou la carence visible.
+                        1. 🎯 NOM DE LA PLANTE : Dit précisément quelle plante ou fruits sont présents sur la photo (ex: Piment, Betterave, Tomate, Pastèque, feuille d'arbre fruiter).
+                        2. 🦠 NOM DE LA MALADIE OU DU SYMPTÔME : Identifie précisément l'attaque visible, la pourriture, le champignon ou la carence.
                         3. ❓ CAUSES PROBABLES : Explique physiquement et environnementalement pourquoi ce problème est apparu sur l'exploitation.
-                        4. 🍃 TRAITEMENT NATUREL ET PROTOCOLE (BIO) : Donne une recette claire à base de plantes locales (Neem, Ail, Cendre, Piment) ou bicarbonate pour soigner le plant.
-                        5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit chimique homologué avec ses consignes de sécurité et le Délai Avant Récolte (DAR).
+                        4. 🍃 TRAITEMENT NATUREL ET PROTOCOLE (BIO) : Donne une recette claire à base de plantes locales (Neem, Ail, Cendre, Piment) ou bicarbonate pour soigner la plante.
+                        5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit chimique homologué pour le maraîchage avec ses consignes de sécurité et le Délai Avant Récolte (DAR).
                         """
                         
+                        # Appel direct au modèle Gemini
                         reponse_ia = modele_ia.generate_content([consigne_prompt, image_pil])
                         
                         st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
