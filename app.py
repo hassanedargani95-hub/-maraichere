@@ -2,11 +2,15 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration de la page mobile Premium
+# Configuration de la page mobile Premium (Optimisée pour connexions lentes et batteries faibles)
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
+# Raccourci technique pour accélérer le chargement des pages sur smartphone
+if "uploader_champ" not in st.session_state:
+    st.session_state["uploader_champ"] = []
+
 # ==========================================
-# CONNEXION AU CERVEAU DE L'IA CLOUD (VERSION COMPATIBLE STABLE)
+# CONNEXION AU CERVEAU DE L'IA CLOUD
 # ==========================================
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 
@@ -46,30 +50,18 @@ tab1, tab2, tab3 = st.tabs(onglets_list)
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
     
-    fichiers_photos = st.file_uploader("Prendre ou charger des photos de vos cultures :", type=["jpg", "png", "jpeg"], accept_multiple_files=True, key="uploader_champ")
+    # Importation d'un seul fichier à la fois pour économiser la bande passante mobile (Plus de blocage de chargement)
+    fichier_photo = st.file_uploader("Prendre ou charger une photo de votre culture :", type=["jpg", "png", "jpeg"], key="photo_unique_champ")
     
-    if fichiers_photos:
-        st.success(f"📊 {len(fichiers_photos)} image(s) reçue(s) par le système.")
+    if fichier_photo is not None:
+        st.success("📊 Image reçue avec succès par le terminal.")
         
-        st.markdown("##### 🖼️ Galerie de vos photos importées :")
-        colonnes_galerie = st.columns(min(len(fichiers_photos), 4))
-        for i, fichier in enumerate(fichiers_photos):
-            with colonnes_galerie[i % min(len(fichiers_photos), 4)]:
-                img_vignette = Image.open(fichier)
-                st.image(img_vignette, caption=f"Photo {i+1}", use_container_width=True)
+        # Ouverture immédiate de l'image
+        image_pil = Image.open(fichier_photo)
+        st.markdown("##### 🎯 Image sélectionnée pour le scan :")
+        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", use_container_width=True)
         
-        st.markdown("---")
-        
-        options_images = [f"Photo {i+1} : {f.name}" for i, f in enumerate(fichiers_photos)]
-        image_selectionne = st.selectbox("Sélectionnez la photo spécifique à faire analyser par l'IA :", options_images, key="selecteur_dynamique")
-        
-        idx = options_images.index(image_selectionne)
-        fichier_actif = fichiers_photos[idx]
-        
-        image_pil = Image.open(fichier_actif)
-        st.markdown("##### 🎯 Image active sélectionnée pour le scan :")
-        st.image(image_pil, caption=f"Prête pour l'analyse : {fichier_actif.name}", use_container_width=True)
-        
+        # BOUTON DÉCLENCHEMENT DU SCANNER IA CONNECTÉ
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
             if modele_ia is None:
                 st.error("Erreur de configuration : La connexion avec le serveur de vision Google n'est pas activée.")
@@ -87,7 +79,6 @@ with tab1:
                         5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit chimique homologué avec ses consignes de sécurité et le Délai Avant Récolte (DAR).
                         """
                         
-                        # Syntaxe d'appel robuste et universelle
                         reponse_ia = modele_ia.generate_content([consigne_prompt, image_pil])
                         
                         st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
