@@ -2,12 +2,8 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration de la page mobile Premium (Optimisée pour connexions lentes et batteries faibles)
+# Configuration de la page mobile Premium
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
-
-# Raccourci technique pour accélérer le chargement des pages sur smartphone
-if "uploader_champ" not in st.session_state:
-    st.session_state["uploader_champ"] = []
 
 # ==========================================
 # CONNEXION AU CERVEAU DE L'IA CLOUD
@@ -46,20 +42,21 @@ base_cultures = {
 onglets_list = ["📸 VRAI Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles"]
 tab1, tab2, tab3 = st.tabs(onglets_list)
 
-# --- ONGLET 1 : RECONNAISSANCE IA DYNAMIQUE PAR INTERNET ---
+# --- ONGLET 1 : RECONNAISSANCE IA DYNAMIQUE ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
     
-    # Importation d'un seul fichier à la fois pour économiser la bande passante mobile (Plus de blocage de chargement)
     fichier_photo = st.file_uploader("Prendre ou charger une photo de votre culture :", type=["jpg", "png", "jpeg"], key="photo_unique_champ")
     
     if fichier_photo is not None:
-        st.success("📊 Image reçue avec succès par le terminal.")
+        st.success("📊 Image reçue avec succès.")
         
         # Ouverture immédiate de l'image
         image_pil = Image.open(fichier_photo)
         st.markdown("##### 🎯 Image sélectionnée pour le scan :")
-        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", use_container_width=True)
+        
+        # Correction majeure : width=300 bloque les déformations et accélère le chargement
+        st.image(image_pil, caption=f"Fichier actif : {fichier_photo.name}", width=300)
         
         # BOUTON DÉCLENCHEMENT DU SCANNER IA CONNECTÉ
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
