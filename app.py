@@ -183,4 +183,3 @@ with tab1:
                 st.error("Erreur de configuration de la clé API.")
             else:
                 with st.spinner("L'IA Cloud analyse votre image..."):
-                    try:
