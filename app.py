@@ -182,4 +182,3 @@ with tab1:
             if modele_ia is None:
                 st.error("Erreur de configuration de la clé API.")
             else:
-                with st.spinner("L'IA Cloud analyse votre image..."):
