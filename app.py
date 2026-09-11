@@ -6,13 +6,14 @@ from PIL import Image
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # ==========================================
-# CONNEXION AU CERVEAU DE L'IA CLOUD (GOOGLE GEMINI)
+# CONNEXION AU CERVEAU DE L'IA CLOUD (VERSION STABLE CORRIGÉE)
 # ==========================================
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
-    modele_ia = genai.GenerativeModel("gemini-1.5-flash")
+    # Correction de l'erreur 404 : Utilisation du nom de modèle complet et valide pour l'API
+    modele_ia = genai.GenerativeModel("models/gemini-1.5-flash")
 else:
     modele_ia = None
 
@@ -46,28 +47,42 @@ tab1, tab2, tab3 = st.tabs(onglets_list)
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
     
-    # Correction majeure : Ajout de la clé unique "key" pour forcer la mise à jour de l'image
+    # Importation multiple de fichiers photos
     fichiers_photos = st.file_uploader("Prendre ou charger des photos de vos cultures :", type=["jpg", "png", "jpeg"], accept_multiple_files=True, key="uploader_champ")
     
     if fichiers_photos:
         st.success(f"📊 {len(fichiers_photos)} image(s) reçue(s) par le système.")
         
+        # --- NOUVEAUTÉ : AFFICHAGE DE TOUTES LES IMAGES SOU L'ONGLET EN PETITES VIGNETTES ---
+        st.markdown("##### 🖼️ Galerie de vos photos importées :")
+        colonnes_galerie = st.columns(min(len(fichiers_photos), 4))
+        for i, fichier in enumerate(fichiers_photos):
+            with colonnes_galerie[i % min(len(fichiers_photos), 4)]:
+                img_vignette = Image.open(fichier)
+                st.image(img_vignette, caption=f"Photo {i+1}", use_container_width=True)
+        
+        st.markdown("---")
+        
+        # Sélecteur de l'image active à envoyer à Google
         options_images = [f"Photo {i+1} : {f.name}" for i, f in enumerate(fichiers_photos)]
-        image_selectionne = st.selectbox("Sélectionnez la photo à analyser en direct :", options_images, key="selecteur_dynamique")
+        image_selectionne = st.selectbox("Sélectionnez la photo spécifique à faire analyser par l'IA :", options_images, key="selecteur_dynamique")
         
         idx = options_images.index(image_selectionne)
         fichier_actif = fichiers_photos[idx]
         
-        # Ouverture de l'image réelle rafraîchie
+        # Ouverture de l'image active
         image_pil = Image.open(fichier_actif)
-        st.image(image_pil, caption=f"Analyse active de : {fichier_actif.name}", use_container_width=True)
+        st.markdown("##### 🎯 Image active sélectionnée pour le scan :")
+        st.image(image_pil, caption=f"Prête pour l'analyse : {fichier_actif.name}", use_container_width=True)
         
+        # BOUTON DÉCLENCHEMENT DU SCANNER IA CONNECTÉ
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
             if modele_ia is None:
                 st.error("Erreur de configuration : La connexion avec le serveur de vision Google n'est pas activée.")
             else:
                 with st.spinner("L'IA Cloud analyse les formes, les couleurs et les symptômes de votre image..."):
                     try:
+                        # Consigne agronomique stricte envoyée à l'IA de Google en même temps que votre photo
                         consigne_prompt = """
                         Agis en tant qu'expert en pathologie végétale et maraîchage d'Afrique de l'Ouest.
                         Analyse cette photo de culture maraîchère et fournis OBLIGATOIREMENT une réponse structurée exactement comme ceci :
@@ -79,8 +94,10 @@ with tab1:
                         5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit chimique homologué avec ses consignes de sécurité et le Délai Avant Récolte (DAR).
                         """
                         
+                        # Appel réel au cerveau connecté de Google Gemini
                         reponse_ia = modele_ia.generate_content([consigne_prompt, image_pil])
                         
+                        # Affichage du résultat dynamique calculé en direct par l'IA
                         st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                         st.markdown("<h3 style='color:#0B4619; text-align:center;'>📋 RAPPORT DE DIAGNOSTIC AUTOMATIQUE CLOUD</h3>", unsafe_allow_html=True)
                         st.write(reponse_ia.text)
