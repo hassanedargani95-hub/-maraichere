@@ -1,21 +1,20 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 # Configuration de la page mobile Premium
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # ==========================================
-# CONNEXION AU CERVEAU DE L'IA CLOUD (VERSION STABLE CORRIGÉE)
+# CONNEXION AU CERVEAU DE L'IA CLOUD (NOUVELLE API GOOGLE GENAI)
 # ==========================================
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 
 if API_KEY_SECRET:
-    genai.configure(api_key=API_KEY_SECRET)
-    # Correction de l'erreur 404 : Utilisation du nom de modèle complet et valide pour l'API
-    modele_ia = genai.GenerativeModel("models/gemini-1.5-flash")
+    # Utilisation de la nouvelle syntaxe officielle et stable de Google
+    client_ia = genai.Client(api_key=API_KEY_SECRET)
 else:
-    modele_ia = None
+    client_ia = None
 
 # Styles graphiques professionnels "Vert Nature"
 st.markdown("""
@@ -47,13 +46,13 @@ tab1, tab2, tab3 = st.tabs(onglets_list)
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
     
-    # Importation multiple de fichiers photos
+    # Importation multiple de fichiers photos active
     fichiers_photos = st.file_uploader("Prendre ou charger des photos de vos cultures :", type=["jpg", "png", "jpeg"], accept_multiple_files=True, key="uploader_champ")
     
     if fichiers_photos:
         st.success(f"📊 {len(fichiers_photos)} image(s) reçue(s) par le système.")
         
-        # --- NOUVEAUTÉ : AFFICHAGE DE TOUTES LES IMAGES SOU L'ONGLET EN PETITES VIGNETTES ---
+        # Affichage de toutes les images chargées sous forme de galerie de vignettes
         st.markdown("##### 🖼️ Galerie de vos photos importées :")
         colonnes_galerie = st.columns(min(len(fichiers_photos), 4))
         for i, fichier in enumerate(fichiers_photos):
@@ -77,25 +76,28 @@ with tab1:
         
         # BOUTON DÉCLENCHEMENT DU SCANNER IA CONNECTÉ
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE PAR INTERNET", key="bouton_ia"):
-            if modele_ia is None:
+            if client_ia is None:
                 st.error("Erreur de configuration : La connexion avec le serveur de vision Google n'est pas activée.")
             else:
                 with st.spinner("L'IA Cloud analyse les formes, les couleurs et les symptômes de votre image..."):
                     try:
-                        # Consigne agronomique stricte envoyée à l'IA de Google en même temps que votre photo
+                        # Consigne agronomique stricte envoyée à l'IA de Google
                         consigne_prompt = """
                         Agis en tant qu'expert en pathologie végétale et maraîchage d'Afrique de l'Ouest.
                         Analyse cette photo de culture maraîchère et fournis OBLIGATOIREMENT une réponse structurée exactement comme ceci :
                         
-                        1. 🎯 NOM DE LA PLANTE : Dit précisément quelle plante est présente sur la photo (ex: Piment, Betterave, Tomate, Pastèque).
+                        1. 🎯 NOM DE LA PLANTE : Dis précisément quelle plante est présente sur la photo (ex: Piment, Betterave, Tomate, Pastèque).
                         2. 🦠 NOM DE LA MALADIE OU DU SYMPTÔME : Identifie précisément l'attaque, le champignon ou la carence visible.
                         3. ❓ CAUSES PROBABLES : Explique physiquement et environnementalement pourquoi ce problème est apparu sur l'exploitation.
                         4. 🍃 TRAITEMENT NATUREL ET PROTOCOLE (BIO) : Donne une recette claire à base de plantes locales (Neem, Ail, Cendre, Piment) ou bicarbonate pour soigner le plant.
                         5. 🧪 TRAITEMENT CHIMIQUE EN DERNIER RECOURS : Donne un produit chimique homologué avec ses consignes de sécurité et le Délai Avant Récolte (DAR).
                         """
                         
-                        # Appel réel au cerveau connecté de Google Gemini
-                        reponse_ia = modele_ia.generate_content([consigne_prompt, image_pil])
+                        # Nouvel appel de l'API Google GenAI connectée
+                        reponse_ia = client_ia.models.generate_content(
+                            model='gemini-2.5-flash',
+                            contents=[image_pil, consigne_prompt]
+                        )
                         
                         # Affichage du résultat dynamique calculé en direct par l'IA
                         st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
