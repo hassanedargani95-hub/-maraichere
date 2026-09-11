@@ -82,7 +82,7 @@ base_encyclopedie = {
         "badge_couleur": "#2E7D32",
         "duree_pepiniere": "45 à 50 jours en pépinière meuble (jusqu'à la grosseur d'un crayon).",
         "cycle_total": "100 à 120 jours après le repiquage.",
-        "entretien": "Désherbage manuel très fréquent. Couper le tiers supérieur des feuilles (habillage) au repiquage.",
+        "entretien": "Désherbage manuel très frequent. Couper le tiers supérieur des feuilles (habillage) au repiquage.",
         "conseil": "Éviter absolument le fumier frais juste avant plantation pour empêcher les bulbes de pourrir."
     },
     "Piment / Poivron": {
@@ -122,7 +122,7 @@ base_encyclopedie = {
         "famille": "Astéracées",
         "amis": "Chou, Carotte, Oignon, Tomate (profite de son ombre)",
         "ennemis": "Persil, Céleri",
-        "methode": "🌱 PÉPINIÈRE OU SEMIS EN LIGNE SERRÉE",
+        "methode": "🌱 PÉPINIÈRE OU SEMIS EN LIGNES SERRÉES",
         "badge_couleur": "#2E7D32",
         "duree_pepiniere": "15 à 18 jours. Les graines doivent être à peine couvertes de sable fin.",
         "cycle_total": "30 à 45 jours (Cycle ultra-court, idéal pour intercaler).",
@@ -171,8 +171,6 @@ tab1, tab2, tab3 = st.tabs(onglets_list)
 # --- ONGLET 1 : RECONNAISSANCE IA DYNAMIQUE ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle Automatique')
-    
-    # Prise de vue unique pour stabiliser le réseau mobile LTE et empêcher le bug de chargement
     fichier_photo = st.file_uploader("Prendre ou charger une photo de votre culture :", type=["jpg", "png", "jpeg"], key="photo_unique_champ")
     
     if fichier_photo is not None:
@@ -184,3 +182,5 @@ with tab1:
             if modele_ia is None:
                 st.error("Erreur de configuration de la clé API.")
             else:
+                with st.spinner("L'IA Cloud analyse votre image..."):
+                    try:
