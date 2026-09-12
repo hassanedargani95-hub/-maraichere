@@ -62,7 +62,7 @@ base_encyclopedie = {
         "famille": "Solanacées", "amis": "Oignon, Ail, Gombo", "ennemis": "Tomate, Aubergine",
         "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "80 à 100 jours",
         "entretien": "Apport de cendres de bois (potassium) à la floraison. Pailler le sol.",
-        "conservation": "Séchage intégral au soleil sur des nattes propres. Conservation sur several années.",
+        "conservation": "Séchage intégral au soleil sur des nattes propres. Conservation sur plusieurs années.",
         "transformation": "Pâte de piment fort en pots (mélange huile chaude), poudre de piment pur.", "rendement_base": 2.0
     },
     "Concombre / Melon": {
@@ -96,7 +96,7 @@ base_encyclopedie = {
     "Menthe": {
         "famille": "Lamiacées", "amis": "Tomate, Chou, Oignon", "ennemis": "Camomille",
         "methode": "🌱 PÉPINIÈRE OU BOUTURAGE DIRECT", "badge_couleur": "#2E7D32", "cycle": "Continue dès 60 jours",
-        "entretien": "Arrosage fréquent. Parfaite pour fixer et stabiliser la terre des bordures d'allées.",
+        "entretien": "Arrosage frequent. Parfaite pour fixer et stabiliser la terre des bordures d'allées.",
         "conservation": "Séchage complet des tiges suspendues à l'ombre. Stockage en bocaux hermétiques (1 an).",
         "transformation": "Distillation artisanale à la vapeur pour extraire l'huile essentielle, sirops maison.", "rendement_base": 1.5
     },
@@ -116,24 +116,23 @@ base_encyclopedie = {
     }
 }
 
-# Configuration linéaire sécurisée des 6 onglets
+# Configuration linéaire 100% sécurisée des 6 onglets
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
 
-# --- MODULE 1 : SCANNER IA (CORRIGÉ VIA BLOC WITH) ---
-with tab1:
-    st.markdown('### 📸 Laboratoire de Vision Artificielle')
-    f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam")
-    if f_photo is not None:
-        st.image(f_photo, width=280)
-        if st.button("🚀 LANCER L'ANALYSE EN DIRECT"):
-            if modele_ia is None:
-                st.error("L'IA est hors-ligne. Clé d'accès manquante.")
-            else:
-                consigne = "Analyse cette photo maraîchère. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
-                reponse = modele_ia.generate_content([consigne, f_photo])
-                st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
-                st.write(reponse.text)
-                st.markdown('</div>', unsafe_allow_html=True)
+# --- MODULE 1 : SCANNER IA (STRUCTURE 100% LINÉAIRE SANS AUCUN BLOC WITH) ---
+tab1.markdown('### 📸 Laboratoire de Vision Artificielle')
+f_photo = tab1.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam")
+
+if f_photo is not None:
+    tab1.image(f_photo, width=280)
+    if tab1.button("🚀 LANCER L'ANALYSE EN DIRECT"):
+        if modele_ia is None:
+            tab1.error("L'IA est hors-ligne. Clé d'accès manquante.")
+        else:
+            consigne = "Analyse cette photo maraîchère. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
+            reponse = modele_ia.generate_content([consigne, f_photo])
+            tab1.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            tab1.write(reponse.text)
+            tab1.markdown('</div>', unsafe_allow_html=True)
 
 # --- MODULE 2 : ASSOCIATION POSSIBLE ---
-with tab2:
