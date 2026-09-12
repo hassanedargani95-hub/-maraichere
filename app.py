@@ -144,4 +144,5 @@ base_encyclopedie = {
     "Menthe": {
         "famille": "Lamiacées (Aromatique)", "amis": "Tomate, Chou, Oignon", "ennemis": "Camomille",
         "methode": "🌱 PÉPINIÈRE OU BOUTURAGE DIRECT", "badge_couleur": "#2E7D32",
-        "duree_pepiniere": "15 à 20 jours ou bouturage immédiat de tiges de 10 cm dans de l'eau.",
+        "duree_pepiniere": "15 à 20 jours ou bouturage immédiat de tiges de 10 cm dans de l'eau."
+    },
