@@ -5,7 +5,7 @@ from PIL import Image
 # Configuration Premium Haute Performance
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
-# Connexion IA Cloud
+# Connection IA Cloud
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
@@ -28,10 +28,10 @@ st.markdown("""
 
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Système Intégral Connecté & Agrobusiness</p></div>', unsafe_allow_html=True)
 
-# Base de données exhaustive et nettoyée
+# Base de données exhaustive
 base_encyclopedie = {
     "Tomate": {
-        "famille": "Solanacées", "amis": "Carotte, Oignon, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
+        "famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
         "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "75 à 90 jours",
         "entretien": "Tuteurage, paillage épais, taille obligatoire des gourmands aux aisselles.",
         "conservation": "Froid modéré (12°C). Séchage solaire complet des tranches étalées sur des claies.",
@@ -62,7 +62,7 @@ base_encyclopedie = {
         "famille": "Solanacées", "amis": "Oignon, Ail, Gombo", "ennemis": "Tomate, Aubergine",
         "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "80 à 100 jours",
         "entretien": "Apport de cendres de bois (potassium) à la floraison. Pailler le sol.",
-        "conservation": "Séchage intégral au soleil sur des nattes propres. Conservation sur plusieurs années.",
+        "conservation": "Séchage intégral au soleil sur des nattes propres. Conservation sur several années.",
         "transformation": "Pâte de piment fort en pots (mélange huile chaude), poudre de piment pur.", "rendement_base": 2.0
     },
     "Concombre / Melon": {
@@ -105,7 +105,7 @@ base_encyclopedie = {
         "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "Continue dès 60 jours",
         "entretien": "Sarclage rigoureux pour éviter l'étouffement. Exige une terre fraîche et humide.",
         "conservation": "Séchage rapide à l'abri de la lumière pour conserver la couleur verte éclatante.",
-        "transformation": "Production de sel de céleri (feuilles séchées broyées avec du sel), bouquets garnis.", "rendement_base": 1.4
+        "transformation": "Production de sel de céleri (feuilles séchées pulvérisées avec du sel), bouquets garnis.", "rendement_base": 1.4
     },
     "Haricot vert / Niébé": {
         "famille": "Fabacées", "amis": "Maïs, Tomate, Aubergine", "ennemis": "Oignon, Ail",
@@ -116,23 +116,24 @@ base_encyclopedie = {
     }
 }
 
-# Configuration sécurisée des 6 onglets
+# Configuration linéaire sécurisée des 6 onglets
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
 
+# --- MODULE 1 : SCANNER IA (CORRIGÉ VIA BLOC WITH) ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle')
     f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam")
     if f_photo is not None:
-        image_pil = Image.open(f_photo)
-        st.image(image_pil, width=280)
+        st.image(f_photo, width=280)
         if st.button("🚀 LANCER L'ANALYSE EN DIRECT"):
             if modele_ia is None:
                 st.error("L'IA est hors-ligne. Clé d'accès manquante.")
             else:
                 consigne = "Analyse cette photo maraîchère. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
-                reponse = modele_ia.generate_content([consigne, image_pil])
+                reponse = modele_ia.generate_content([consigne, f_photo])
                 st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                 st.write(reponse.text)
                 st.markdown('</div>', unsafe_allow_html=True)
 
+# --- MODULE 2 : ASSOCIATION POSSIBLE ---
 with tab2:
