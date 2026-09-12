@@ -40,7 +40,7 @@ st.markdown("""
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Système Intégral Connecté & Agrobusiness</p></div>', unsafe_allow_html=True)
 
 # ==========================================
-# BASE DE DONNÉES ENCYCLOPÉDIQUE EXHAUSTIVE
+# BASE DE DONNÉES ENCYCLOPÉDIQUE ET FINANCIÈRE EXHAUSTIVE
 # ==========================================
 base_encyclopedie = {
     "Tomate": {
@@ -100,8 +100,8 @@ base_encyclopedie = {
     "Concombre / Melon / Courgette": {
         "famille": "Cucurbitacées", "amis": "Salade, Chou, Oignon, Haricot", "ennemis": "Tomate, Pastèque",
         "methode": "🎯 SEMIS DIRECT AU CHAMP", "badge_couleur": "#C62828",
-        "duree_pepiniere": "Semis direct ou 10 jours maximum en godets individuels.",
         "cycle_total": "50 à 65 jours.",
+        "duree_pepiniere": "Semis direct ou 10 jours maximum en godets individuels.",
         "entretien": "Arrosage abondant quotidien. Tuteurs solides pour maintenir les fruits hors du sol.",
         "conseil": "Le moindre manque d'eau déclenche immédiatement l'amertume du fruit.",
         "conservation": "Conserver emballé au frais entre 10 et 12°C pendant 7 à 10 jours maximum.",
