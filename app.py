@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration Premium Haute Performance Mobile
+# Configuration Premium Mobile Allégée
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
 # Connexion sécurisée à l'IA Cloud Google
@@ -13,125 +13,102 @@ if API_KEY_SECRET:
 else:
     modele_ia = None
 
-# Styles graphiques professionnels de la maquette UI Vert Nature
+# Styles graphiques professionnels Vert Nature Maquette UI
 st.markdown("""
     <style>
         .stApp { background-color: #F3F5F4; }
         .app-header { background-color: #2CB674; padding: 25px; border-radius: 0px 0px 25px 25px; color: white; text-align: center; margin-top: -60px; margin-bottom: 20px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
         .category-card { background-color: #FFFFFF; padding: 15px; border-radius: 18px; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04); margin-bottom: 15px; border-left: 6px solid #2CB674; }
         .diagnostic-box { background-color: #FFFFFF; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 12px rgba(0,0,0,0.05); margin-top: 15px; }
-        .badge-methode { padding: 6px 14px; border-radius: 20px; font-weight: bold; color: white; display: inline-block; margin-bottom: 10px; }
-        .badge-biz { background-color: #E6F7ED; color: #1E5631; padding: 8px; border-radius: 10px; font-weight: bold; border: 1px solid #2CB674; display: inline-block; margin-top: 10px; }
-        .doc-section { background-color: #FFFFFF; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 5px solid #2CB674; }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Système Intégral Connecté & Agrobusiness</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Intelligence Artificielle de Précision Connectée</p></div>', unsafe_allow_html=True)
 
-# Base de données exhaustive et solide
-base_encyclopedie = {
-    "Tomate": {
-        "famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
-        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "75 à 90 jours",
-        "entretien": "Tuteurage, paillage épais, taille obligatoire des gourmands aux aisselles.",
-        "conservation": "Froid modéré (12°C). Séchage solaire complet des tranches étalées sur des claies.",
-        "transformation": "Concentré de tomate, coulis pasteurisé en bouteilles, tomates séchées confites.", "rendement_base": 3.5
-    },
-    "Pastèque": {
-        "famille": "Cucurbitacées", "amis": "Maïs (brise-vent), Gombo, Tournesol", "ennemis": "Concombre, Melon",
-        "methode": "🎯 SEMIS DIRECT AU CHAMP", "badge_couleur": "#C62828", "cycle": "80 à 95 jours",
-        "entretien": "Buttes très larges et plates en travers de la pente. Ne laisser qu'un plant robuste après 15 jours.",
-        "conservation": "Se conserve 2 à 3 semaines à l'ombre sur de la paille sèche dans un abri aéré.",
-        "transformation": "Jus frais pasteurisé, confiserie à base d'écorces blanches (pelures), huile de graines.", "rendement_base": 12.0
-    },
-    "Gombo": {
-        "famille": "Malvacées", "amis": "Piment, Aubergine, Pastèque", "ennemis": "Oignon, Tomate",
-        "methode": "🎯 SEMIS DIRECT AU CHAMP", "badge_couleur": "#C62828", "cycle": "55 à 65 jours",
-        "entretien": "Buttage des pieds à la houe un mois après la levée pour consolider la tige contre le vent.",
-        "conservation": "Fragile. Se conserve 3 à 4 jours enveloppé à l'abri de la lumière.",
-        "transformation": "Déshydratation des rondelles au séchoir solaire et réduction en poudre fine de contre-saison.", "rendement_base": 1.8
-    },
-    "Oignon": {
-        "famille": "Alliacées", "amis": "Carotte, Laitue, Tomate", "ennemis": "Gombo, Haricot",
-        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "100 à 120 jours",
-        "entretien": "Désherbage manuel frequent. Habillage (taille) des feuilles et radicelles au repiquage.",
-        "conservation": "Ressuyage de 48h sur le champ, puis tressage et suspension dans un hangar sec.",
-        "transformation": "Séchage de fines lamelles et réduction en poudre d'oignon aromatique.", "rendement_base": 2.5
-    },
-    "Piment / Poivron": {
-        "famille": "Solanacées", "amis": "Oignon, Ail, Gombo", "ennemis": "Tomate, Aubergine",
-        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "80 à 100 jours",
-        "entretien": "Apport de cendres de bois (potassium) à la floraison. Pailler le sol.",
-        "conservation": "Séchage intégral au soleil sur des nattes propres. Conservation sur plusieurs années.",
-        "transformation": "Pâte de piment fort en pots (mélange huile chaude), poudre de piment pur.", "rendement_base": 2.0
-    },
-    "Concombre / Melon": {
-        "famille": "Cucurbitacées", "amis": "Salade, Chou, Oignon", "ennemis": "Tomate, Pastèque",
-        "methode": "🎯 SEMIS DIRECT AU CHAMP", "badge_couleur": "#C62828", "cycle": "50 à 65 jours",
-        "entretien": "Arrosage quotidien abondant au pied. Le moindre manque d'eau rend le fruit amer.",
-        "conservation": "Conserver emballé au frais (10-12°C) pendant 7 à 10 jours maximum.",
-        "transformation": "Immersion immédiate dans une saumure vinaigrée salée pour la production de cornichons.", "rendement_base": 4.5
-    },
-    "Chou": {
-        "famille": "Brassicacées", "amis": "Laitue, Oignon, Céleri", "ennemis": "Ail, Fraise",
-        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "85 à 105 jours",
-        "entretien": "Exigeant en azote (fientes de poule sèches). Filet anti-chenilles obligatoire.",
-        "conservation": "Se conserve au frais en caissettes bois ventilées pendant 2 à 3 semaines.",
-        "transformation": "Râpage fin et fermentation lactique naturelle (saumure) pour fabriquer la choucroute.", "rendement_base": 3.0
-    },
-    "Laitue / Salade": {
-        "famille": "Astéracées", "amis": "Chou, Carotte, Tomate", "ennemis": "Persil, Céleri",
-        "methode": "🌱 PÉPINIÈRE OU LIGNES", "badge_couleur": "#2E7D32", "cycle": "30 à 45 jours",
-        "entretien": "Sarclage délicat, arrosage fin en pluie, récolte obligatoire à l'aube.",
-        "conservation": "Très courte (24 à 48h). Envelopper dans un tissu en coton humide au frais.",
-        "transformation": "Aucune transformation possible. Consommation brute à l'état frais uniquement.", "rendement_base": 0.4
-    },
-    "Carotte / Betterave": {
-        "famille": "Apiacées", "amis": "Oignon, Laitue, Tomate", "ennemis": "Aneth, Fenouil",
-        "methode": "🎯 SEMIS DIRECT EN LIGNES SERRÉES", "badge_couleur": "#C62828", "cycle": "70 à 90 jours",
-        "entretien": "Éclaircissage à 5 cm après levée. Exige un sol profondément sableux meuble sans cailloux.",
-        "conservation": "Couper les fanes et stocker les racines alignées dans du sable sec à l'ombre (2 mois).",
-        "transformation": "Extraction mécanique de jus filtré pasteurisé, conserves de rondelles au vinaigre.", "rendement_base": 2.2
-    },
-    "Menthe": {
-        "famille": "Lamiacées", "amis": "Tomate, Chou, Oignon", "ennemis": "Camomille",
-        "methode": "🌱 PÉPINIÈRE OU BOUTURAGE DIRECT", "badge_couleur": "#2E7D32", "cycle": "Continue dès 60 jours",
-        "entretien": "Arrosage fréquent. Parfaite pour fixer et stabiliser la terre des bordures d'allées.",
-        "conservation": "Séchage complet des tiges suspendues à l'ombre. Stockage en bocaux hermétiques (1 an).",
-        "transformation": "Distillation artisanale à la vapeur pour extraire l'huile essentielle, sirops maison.", "rendement_base": 1.5
-    },
-    "Persil / Céleri": {
-        "famille": "Apiacées", "amis": "Tomate, Oignon, Poireau", "ennemis": "Laitue",
-        "methode": "🌱 PÉPINIÈRE OBLIGATOIRE", "badge_couleur": "#2E7D32", "cycle": "Continue dès 60 jours",
-        "entretien": "Sarclage rigoureux pour éviter l'étouffement. Exige une terre fraîche et humide.",
-        "conservation": "Séchage rapide à l'abri de la lumière pour conserver la couleur verte éclatante.",
-        "transformation": "Production de sel de céleri (feuilles séchées pulvérisées avec du sel), bouquets garnis.", "rendement_base": 1.4
-    },
-    "Haricot vert / Niébé": {
-        "famille": "Fabacées", "amis": "Maïs, Tomate, Aubergine", "ennemis": "Oignon, Ail",
-        "methode": "🎯 SEMIS DIRECT AU CHAMP", "badge_couleur": "#C62828", "cycle": "45 à 60 jours",
-        "entretien": "Binage léger. Capte l'azote de l'air pour amender le sol naturellement sans engrais.",
-        "conservation": "Frais : 5 jours. Grain sec : stocker avec des feuilles de neem anti-charançons.",
-        "transformation": "Stérilisation à l'autoclave et mise en conserve des gousses, ensachage étanche.", "rendement_base": 1.6
-    }
-}
+# Liste exhaustive des plantes maraîchères (Sans fioritures pour éviter la saturation réseau)
+liste_plantes = [
+    "Tomate", "Pastèque", "Gombo", "Oignon", "Piment / Poivron", 
+    "Concombre / Melon", "Chou", "Laitue / Salade", 
+    "Carotte / Betterave", "Menthe", "Persil / Céleri", "Haricot vert / Niébé"
+]
 
-# Configuration sécurisée des 6 onglets
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
+# Configuration rigoureuse des 5 Onglets Universels
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"])
 
-# --- MODULE 1 : SCANNER IA ---
+# --- ONGLETS 1 : VRAI SCANNER IA ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle')
     f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam_unique")
     if f_photo is not None:
         st.image(f_photo, width=280)
-        if st.button("🚀 LANCER L'ANALYSE EN DIRECT", key="bouton_scan"):
-            if modele_ia is None:
-                st.error("L'IA est hors-ligne. Clé d'accès manquante.")
-            else:
-                consigne = "Analyse cette photo maraîchère. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
+        if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE"):
+            with st.spinner("L'IA examine vos cultures en direct..."):
+                consigne = "Analyse cette photo maraîchère africaine. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
                 reponse = modele_ia.generate_content([consigne, f_photo])
                 st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                 st.write(reponse.text)
                 st.markdown('</div>', unsafe_allow_html=True)
 
+# --- ONGLET 2 : ASSOCIATION DES PLANTES ---
+with tab2:
+    st.markdown('<div class="category-card"><h3>🌿 Compagnonnage & Associations</h3>Sélectionnez une plante pour interroger l\'IA sur ses partenaires de champ et ses ennemis.</div>', unsafe_allow_html=True)
+    pl2 = st.selectbox("Sélectionnez la culture à associer :", liste_plantes, key="key_asso")
+    if st.button("🔍 CONSULTER LES ASSOCIATIONS"):
+        with st.spinner("Recherche des affinités..."):
+            prompt_asso = f"Donne les plantes amies (bonnes associations) et les plantes ennemies (à éviter à proximité) pour la culture de : {pl2} en Afrique de l'Ouest. Sois court et précis."
+            reponse_asso = modele_ia.generate_content(prompt_asso)
+            st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            st.write(reponse_asso.text)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+# --- ONGLET 3 : SUIVI TECHNIQUE ET CYCLES ---
+with tab3:
+    st.markdown('<div class="category-card"><h3>🚜 Fiche Technique Évolutive</h3>Découvrez le processus complet de mise en place de votre plante.</div>', unsafe_allow_html=True)
+    pl3 = st.selectbox("Sélectionnez la culture à étudier :", liste_plantes, key="key_cycle")
+    if st.button("📋 AFFICHER LE PROCESSUS TECHNIQUE"):
+        with st.spinner("Génération du calendrier cultural..."):
+            prompt_cycle = f"Pour la culture de la plante '{pl3}', indique de manière structurée : 1. Si la PÉPINIÈRE est obligatoire ou s'il faut faire un SEMIS DIRECT au champ. 2. La durée totale du cycle. 3. Les besoins d'entretien (tuteurage, taille, paillage). Reste synthétique."
+            reponse_cycle = modele_ia.generate_content(prompt_cycle)
+            st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            st.write(reponse_cycle.text)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+# --- ONGLET 4 : AGROBUSINESS (CONSERVATION & TRANSFORMATION) ---
+with tab4:
+    st.markdown('<div class="category-card"><h3>🏭 Transformation & Conservation</h3>Apprenez à valoriser vos herbes aromatiques, fruits et racines pour maximiser vos gains.</div>', unsafe_allow_html=True)
+    pl4 = st.selectbox("Sélectionnez la culture à valoriser :", liste_plantes, key="key_agro")
+    if st.button("🏭 CONFIGURER LE PROJET AGROBUSINESS"):
+        with st.spinner("Calcul des méthodes agro-industrielles..."):
+            prompt_agro = f"Pour la culture maraîchère de : {pl4}, décris brièvement : 1. Les meilleures méthodes de conservation (stockage au sec ou au frais). 2. Les procédés de transformation locale rentables (séchage en poudre, sirops, conserves, huiles)."
+            reponse_agro = modele_ia.generate_content(prompt_agro)
+            st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            st.write(reponse_agro.text)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+# --- ONGLET 5 : BUDGET FINANCIER DYNAMIQUE ---
+with tab5:
+    st.markdown('<div class="category-card"><h3>💰 Simulateur de Profit & Business Plan</h3>Entrez vos données de terrain pour estimer vos revenus réels en FCFA.</div>', unsafe_allow_html=True)
+    pl5 = st.selectbox("Sélectionnez la plante pour le calcul financier :", liste_plantes, key="key_budget")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        nbr_pieds = st.number_input("Nombre de poquets plantés :", min_value=1, value=500, step=50)
+        prix_kilo = st.number_input("Prix au Kilo sur le marché (FCFA) :", min_value=50, value=400, step=25)
+    with col2:
+        total_charges = st.number_input("Total de vos dépenses engagées (FCFA) :", min_value=0, value=25000, step=1000)
+    
+    t1 = st.checkbox("Application d'un système de paillage complet (+30% rendement)")
+    t2 = st.checkbox("Fertilisation organique via les fientes de votre poulailler (+30% rendement)")
+    
+    if st.button("💰 CALCULER LE RENDEMENT FINANCIER"):
+        bonus = 1.0
+        if t1: bonus += 0.3
+        if t2: bonus += 0.3
+        
+        # Invite l'IA à calculer la production attendue selon la plante choisie
+        with st.spinner("Calcul de la rentabilité..."):
+            prompt_budget = f"Calcule le rendement moyen attendu en Kg pour {nbr_pieds} pieds de {pl5} en appliquant un bonus multiplicateur de fertilité de {bonus}. Multiplie ensuite ce poids par {prix_kilo} FCFA pour obtenir le Chiffre d'Affaires Brut. Soustrais {total_charges} FCFA de charges pour afficher clairement le BÉNÉFICE NET prévisionnel en gros caractères FCFA."
+            reponse_budget = modele_ia.generate_content(prompt_budget)
+            st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
+            st.write(reponse_budget.text)
+            st.markdown('</div>', unsafe_allow_html=True)
