@@ -2,10 +2,10 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration Premium Haute Performance
+# Configuration Premium Haute Performance Mobile
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
-# Connection IA Cloud
+# Connexion sécurisée à l'IA Cloud Google
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
@@ -13,7 +13,7 @@ if API_KEY_SECRET:
 else:
     modele_ia = None
 
-# Styles graphiques Vert Nature original
+# Styles graphiques professionnels de la maquette UI Vert Nature
 st.markdown("""
     <style>
         .stApp { background-color: #F3F5F4; }
@@ -28,12 +28,7 @@ st.markdown("""
 
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Système Intégral Connecté & Agrobusiness</p></div>', unsafe_allow_html=True)
 
-# ==========================================
-# CRÉATION DES ONGLETS EN PREMIER (OBLIGATOIRE POUR LE MARAÎCHAGE)
-# ==========================================
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
-
-# Base de données exhaustive
+# Base de données exhaustive et solide
 base_encyclopedie = {
     "Tomate": {
         "famille": "Solanacées", "amis": "Carotte, Oignon, Laitue, Basilic, Œillet d'Inde", "ennemis": "Pomme de terre, Poivron",
@@ -121,13 +116,16 @@ base_encyclopedie = {
     }
 }
 
+# Configuration sécurisée des 6 onglets
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
+
 # --- MODULE 1 : SCANNER IA ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle')
-    f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam")
+    f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam_unique")
     if f_photo is not None:
         st.image(f_photo, width=280)
-        if st.button("🚀 LANCER L'ANALYSE EN DIRECT"):
+        if st.button("🚀 LANCER L'ANALYSE EN DIRECT", key="bouton_scan"):
             if modele_ia is None:
                 st.error("L'IA est hors-ligne. Clé d'accès manquante.")
             else:
