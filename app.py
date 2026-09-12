@@ -82,7 +82,7 @@ base_encyclopedie = {
         "duree_pepiniere": "45 à 50 jours en pépinière meuble (grosseurs d'un crayon).",
         "cycle_total": "100 à 120 jours après repiquage.",
         "entretien": "Désherbage manuel frequent. Taille des feuilles et des radicelles lors du repiquage (habillage).",
-        "conservation": "Ressuyage obligatoire sur le champ pendant 48h, puis tressage et suspension au sec.",
+        "conservation": "Ressuyage obligatoire sur le champ pendant 48h, puis tressage and suspension au sec.",
         "transformation": "Séchage de fines lamelles et réduction en poudre fine d'oignon.",
         "rendement_base": 2.5
     },
@@ -135,7 +135,7 @@ base_encyclopedie = {
         "methode": "🎯 SEMIS DIRECT EN LIGNES SERRÉES", "badge_couleur": "#C62828",
         "duree_pepiniere": "Zéro jour (Le repiquage déforme la racine et la rend invendable).",
         "cycle_total": "70 à 90 jours (25 jours pour les radis).",
-        "entretien": "Éclaircissage après 20 jours pour laisser 5 cm d'écartement entre les plantes.",
+        "entretien": "Éclaircissage après 20 jours pour laisser 5 cm d'espace entre les plantes.",
         "conseil": "Exige un sol profondément meuble, sableux et totalement débarrassé des cailloux.",
         "conservation": "Couper les fanes et stocker les racines dans du sable sec à l'ombre (durée 2 mois).",
         "transformation": "Extraction mécanique de jus filtré pasteurisé, betteraves cuites en conserve de vinaigre.",
