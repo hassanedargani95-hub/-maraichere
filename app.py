@@ -1,18 +1,20 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 # Configuration Premium Mobile Allégée
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
-# Connexion sécurisée à l'IA Cloud Google
+# ==========================================
+# CONNEXION AU CERVEAU DE L'IA (NOUVELLE API GOOGLE GENAI STABLE)
+# ==========================================
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
+
 if API_KEY_SECRET:
-    genai.configure(api_key=API_KEY_SECRET)
-    # CORRECTION DE L'ERREUR 404 : Retrait strict du préfixe "models/" pour s'accorder avec la passerelle v1beta
-    modele_ia = genai.GenerativeModel("gemini-1.5-flash")
+    # Utilisation de la nouvelle syntaxe moderne et sécurisée de Google
+    client_ia = genai.Client(api_key=API_KEY_SECRET)
 else:
-    modele_ia = None
+    client_ia = None
 
 # Styles graphiques professionnels Vert Nature Maquette UI
 st.markdown("""
@@ -48,14 +50,17 @@ with tab1:
             with st.spinner("L'IA examine vos cultures en direct..."):
                 try:
                     consigne = "Analyse cette photo maraîchère africaine. Donne le NOM DE LA PLANTE, la MALADIE, les CAUSES et le TRAITEMENT NATUREL BIO."
-                    reponse = modele_ia.generate_content([consigne, image_pil])
+                    reponse = client_ia.models.generate_content(
+                        model='gemini-2.5-flash',
+                        contents=[image_pil, consigne]
+                    )
                     st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                     st.write(reponse.text)
                     st.markdown('</div>', unsafe_allow_html=True)
                 except Exception as e:
                     st.error(f"Erreur d'analyse : {str(e)}")
 
-# --- ONGLET 2 : ASSOCIATION & DOCUMENTATION ENCYCLOPÉDIQUE FUSIONNÉES ---
+# --- ONGLET 2 : ASSOCIATION & DOCUMENTATION ---
 with tab2:
     st.markdown('<div class="category-card"><h3>🌿 Compagnonnage & Associations</h3>Sélectionnez une plante pour interroger l\'IA sur ses partenaires de champ et ses ennemis.</div>', unsafe_allow_html=True)
     pl2 = st.selectbox("Sélectionnez la culture à associer :", liste_plantes, key="key_asso")
@@ -63,7 +68,10 @@ with tab2:
         with st.spinner("Recherche des affinités..."):
             try:
                 prompt_asso = f"Donne les plantes amies (bonnes associations) et les plantes ennemies (à éviter à proximité) pour la culture de : {pl2} en Afrique de l'Ouest. Sois court et précis."
-                reponse_asso = modele_ia.generate_content(prompt_asso)
+                reponse_asso = client_ia.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt_asso
+                )
                 st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                 st.write(reponse_asso.text)
                 st.markdown('</div>', unsafe_allow_html=True)
@@ -91,7 +99,10 @@ with tab3:
         with st.spinner("Génération du calendrier cultural..."):
             try:
                 prompt_cycle = f"Pour la culture de la plante '{pl3}', indique de manière structurée : 1. Si la PÉPINIÈRE est obligatoire ou s'il faut faire un SEMIS DIRECT au champ. 2. La durée totale du cycle. 3. Les besoins d'entretien (tuteurage, taille, paillage). Reste synthétique."
-                reponse_cycle = modele_ia.generate_content(prompt_cycle)
+                reponse_cycle = client_ia.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt_cycle
+                )
                 st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                 st.write(reponse_cycle.text)
                 st.markdown('</div>', unsafe_allow_html=True)
@@ -106,7 +117,10 @@ with tab4:
         with st.spinner("Calcul des méthodes agro-industrielles..."):
             try:
                 prompt_agro = f"Pour la culture maraîchère de : {pl4}, décris brièvement : 1. Les meilleures méthodes de conservation (stockage au sec ou au frais). 2. Les procédés de transformation locale rentables (séchage en poudre, sirops, conserves, huiles)."
-                reponse_agro = modele_ia.generate_content(prompt_agro)
+                reponse_agro = client_ia.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt_agro
+                )
                 st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
                 st.write(reponse_agro.text)
                 st.markdown('</div>', unsafe_allow_html=True)
@@ -135,9 +149,5 @@ with tab5:
         with st.spinner("Calcul de la rentabilité..."):
             try:
                 prompt_budget = f"Calcule le rendement moyen attendu en Kg pour {nbr_pieds} pieds de {pl5} en appliquant un bonus multiplicateur de fertilité de {bonus}. Multiplie ensuite ce poids par {prix_kilo} FCFA pour obtenir le Chiffre d'Affaires Brut. Soustrais {total_charges} FCFA de charges pour afficher clairement le BÉNÉFICE NET prévisionnel en gros caractères FCFA."
-                reponse_budget = modele_ia.generate_content(prompt_budget)
-                st.markdown('<div class="diagnostic-box">', unsafe_allow_html=True)
-                st.write(reponse_budget.text)
-                st.markdown('</div>', unsafe_allow_html=True)
-            except Exception as e:
-                st.error(f"Erreur : {str(e)}")
+                reponse_budget = client_ia.models.generate_content(
+                    model='gemini-2.5-flash',
