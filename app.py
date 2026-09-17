@@ -9,7 +9,7 @@ st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", lay
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
-    # CORRECTION DE L'ERREUR 404 : Retrait du préfixe "models/" pour s'adapter à la passerelle d'analyse
+    # CORRECTION DE L'ERREUR 404 : Retrait strict du préfixe "models/" pour s'accorder avec la passerelle v1beta
     modele_ia = genai.GenerativeModel("gemini-1.5-flash")
 else:
     modele_ia = None
