@@ -9,8 +9,8 @@ st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", lay
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
-    # Utilisation du nom de modèle officiel et stable exigé par l'API
-    modele_ia = genai.GenerativeModel("models/gemini-1.5-flash")
+    # CORRECTION DE L'ERREUR 404 : Retrait du préfixe "models/" obsolète pour la passerelle v1beta
+    modele_ia = genai.GenerativeModel("gemini-1.5-flash")
 else:
     modele_ia = None
 
@@ -21,6 +21,7 @@ st.markdown("""
         .app-header { background-color: #2CB674; padding: 25px; border-radius: 0px 0px 25px 25px; color: white; text-align: center; margin-top: -60px; margin-bottom: 20px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
         .category-card { background-color: #FFFFFF; padding: 15px; border-radius: 18px; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04); margin-bottom: 15px; border-left: 6px solid #2CB674; }
         .diagnostic-box { background-color: #FFFFFF; padding: 20px; border-radius: 15px; box-shadow: 0px 4px 12px rgba(0,0,0,0.05); margin-top: 15px; }
+        .doc-section { background-color: #FFFFFF; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 5px solid #2CB674; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -33,8 +34,8 @@ liste_plantes = [
     "Carotte / Betterave", "Menthe", "Persil / Céleri", "Haricot vert / Niébé"
 ]
 
-# Configuration des 5 Onglets de Navigation
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"])
+# Configuration explicite des 6 Onglets de Navigation (Avec l'onglet Documentation)
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget", "📚 Documentation"])
 
 # --- ONGLETS 1 : VRAI SCANNER IA ---
 with tab1:
@@ -43,7 +44,6 @@ with tab1:
     if f_photo is not None:
         image_pil = Image.open(f_photo)
         st.image(image_pil, width=280)
-        # Changement : L'analyse est strictement bloquée tant qu'on ne clique pas sur le bouton
         if st.button("🚀 LANCER L'ANALYSE AUTOMATIQUE", key="btn_scan_ia"):
             with st.spinner("L'IA examine vos cultures en direct..."):
                 try:
@@ -59,7 +59,6 @@ with tab1:
 with tab2:
     st.markdown('<div class="category-card"><h3>🌿 Compagnonnage & Associations</h3>Sélectionnez une plante pour interroger l\'IA sur ses partenaires de champ et ses ennemis.</div>', unsafe_allow_html=True)
     pl2 = st.selectbox("Sélectionnez la culture à associer :", liste_plantes, key="key_asso")
-    # Changement : Verrouillage strict du bouton pour empêcher le plantage automatique au chargement
     if st.button("🔍 CONSULTER LES ASSOCIATIONS", key="btn_asso_ia"):
         with st.spinner("Recherche des affinités..."):
             try:
@@ -129,3 +128,18 @@ with tab5:
                 st.markdown('</div>', unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Erreur : {str(e)}")
+
+# --- ONGLET 6 : DOCUMENTATION ENCYCLOPÉDIQUE ---
+with tab6:
+    st.markdown('### 📚 Encyclopédie Officielle du Maraîchage')
+    st.write("Retrouvez ici la classification complète de toutes les familles botaniques maraîchères.")
+    with st.expander("🍅 1. Les Légumes-Fruits"):
+        st.markdown('<div class="doc-section"><b>Solanacées & Cucurbitacées :</b> Tomate, Pastèque, Piment, Poivron, Aubergine, Concombre, Gombo. Cultures exigeantes en matière organique.</div>', unsafe_allow_html=True)
+    with st.expander("🥬 2. Les Légumes-Feuilles"):
+        st.markdown('<div class="doc-section"><b>Brassicacées & Astéracées :</b> Chou, Laitue, Salade, Épinard, Amarante (Boroussou), Bissap, Moringa. Idéal pour rotation rapide.</div>', unsafe_allow_html=True)
+    with st.expander("🥕 3. Les Légumes-Racines & Bulbes"):
+        st.markdown('<div class="doc-section"><b>Alliacées & Apiacées :</b> Oignon, Ail, Carotte, Radis, Betterave, Patate douce. Sol meuble profond travaillé à la daba.</div>', unsafe_allow_html=True)
+    with st.expander("🌿 4. Les Plantes Aromatiques & Condiments"):
+        st.markdown('<div class="doc-section"><b>Lamiacées & Apiacées :</b> Menthe, Persil, Céleri, Basilic, Coriandre. Parfait pour séchage thermique et extraction d\'huiles essentielles.</div>', unsafe_allow_html=True)
+    with st.expander("🫘 5. Les Légumes-Gousses"):
+        st.markdown('<div class="doc-section"><b>Fabacées :</b> Haricot vert, Niébé, Pois de terre. Captent l\'azote de l\'air pour amender le sol gratuitement.</div>', unsafe_allow_html=True)
