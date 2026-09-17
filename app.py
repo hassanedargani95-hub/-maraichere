@@ -2,19 +2,19 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# Configuration de la page mobile
+# Configuration Premium Mobile Allégée
 st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", layout="centered")
 
-# Connexion sécurisée à l'IA de Google
+# Connexion sécurisée à l'IA Cloud Google
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
-    # Correction de l'erreur : Utilisation du nouveau nom de modèle reconnu par Google
-    modele_ia = genai.GenerativeModel("gemini-1.5-flash-8b")
+    # CORRECTION DE L'ERREUR 404 : Utilisation du nom de modèle universel stable validé par l'API
+    modele_ia = genai.GenerativeModel("gemini-1.5-flash")
 else:
     modele_ia = None
 
-# Styles graphiques Vert Nature (Style Maquette UI)
+# Styles graphiques professionnels Vert Nature Maquette UI
 st.markdown("""
     <style>
         .stApp { background-color: #F3F5F4; }
@@ -27,17 +27,17 @@ st.markdown("""
 
 st.markdown('<div class="app-header"><h1>📖 La Bible Maraîchère</h1><p>Intelligence Artificielle de Précision Connectée</p></div>', unsafe_allow_html=True)
 
-# Liste de toutes vos cultures maraîchères
+# Liste exhaustive des plantes maraîchères
 liste_plantes = [
     "Tomate", "Pastèque", "Gombo", "Oignon", "Piment / Poivron", 
     "Concombre / Melon", "Chou", "Laitue / Salade", 
     "Carotte / Betterave", "Menthe", "Persil / Céleri", "Haricot vert / Niébé"
 ]
 
-# Les 5 onglets mobiles
+# Menu condensé en 5 onglets pour tenir parfaitement sur l'écran du smartphone
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["📸 Scanner IA", "🌿 Association Possible", "🚜 Suivi Cycles", "🏭 Agrobusiness", "💰 Mon Budget"])
 
-# --- ONGLET 1 : SCANNER IA ---
+# --- ONGLET 1 : VRAI SCANNER IA ---
 with tab1:
     st.markdown('### 📸 Laboratoire de Vision Artificielle')
     f_photo = st.file_uploader("Prendre ou charger une photo :", type=["jpg", "png", "jpeg"], key="cam_unique")
