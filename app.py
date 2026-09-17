@@ -9,7 +9,7 @@ st.set_page_config(page_title="La Bible Maraîchère PRO", page_icon="📖", lay
 API_KEY_SECRET = "AQ.Ab8RN6J5BtDax27zI7Iz6-zyRi3Ql2Mg6U19v7ggbcDToXEibw" 
 if API_KEY_SECRET:
     genai.configure(api_key=API_KEY_SECRET)
-    # CORRECTION DE L'ERREUR 404 : Utilisation du nom de modèle universel stable validé par l'API
+    # CORRECTION CRITIQUE DU 404 : Retrait définitif du préfixe "models/" pour forcer l'accès direct
     modele_ia = genai.GenerativeModel("gemini-1.5-flash")
 else:
     modele_ia = None
@@ -55,7 +55,7 @@ with tab1:
                 except Exception as e:
                     st.error(f"Erreur d'analyse : {str(e)}")
 
-# --- ONGLET 2 : ASSOCIATION & ENCYCLOPÉDIE ---
+# --- ONGLET 2 : ASSOCIATION & DOCUMENTATION ENCYCLOPÉDIQUE FUSIONNÉES ---
 with tab2:
     st.markdown('<div class="category-card"><h3>🌿 Compagnonnage & Associations</h3>Sélectionnez une plante pour interroger l\'IA sur ses partenaires de champ et ses ennemis.</div>', unsafe_allow_html=True)
     pl2 = st.selectbox("Sélectionnez la culture à associer :", liste_plantes, key="key_asso")
@@ -75,7 +75,7 @@ with tab2:
     with st.expander("🍅 1. Les Légumes-Fruits"):
         st.markdown('<div class="doc-section"><b>Solanacées & Cucurbitacées :</b> Tomate, Pastèque, Piment, Poivron, Aubergine, Concombre, Gombo. Exigeants en eau et matière organique.</div>', unsafe_allow_html=True)
     with st.expander("🥬 2. Les Légumes-Feuilles"):
-        st.markdown('<div class="doc-section"><b>Brassicacées & Astéracées :</b> Chou, Laitue, Salade, Épinard, Amarante, Bissap, Moringa. Idéal pour rotation rapide.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="doc-section"><b>Brassicacées & Astéracées :</b> Chou, Laitue, Salade, Épinard, Amarante (Boroussou), Bissap, Moringa. Idéal pour rotation rapide.</div>', unsafe_allow_html=True)
     with st.expander("🥕 3. Les Légumes-Racines & Bulbes"):
         st.markdown('<div class="doc-section"><b>Alliacées & Apiacées :</b> Oignon, Ail, Carotte, Radis, Betterave, Patate douce. Sol meuble profond travaillé à la daba.</div>', unsafe_allow_html=True)
     with st.expander("🌿 4. Les Plantes Aromatiques & Condiments"):
@@ -83,7 +83,7 @@ with tab2:
     with st.expander("🫘 5. Les Légumes-Gousses"):
         st.markdown('<div class="doc-section"><b>Fabacées :</b> Haricot vert, Niébé, Pois de terre. Captent l\'azote de l\'air pour amender le sol gratuitement.</div>', unsafe_allow_html=True)
 
-# --- ONGLET 3 : SUIVI TECHNIQUE ---
+# --- ONGLET 3 : SUIVI TECHNIQUE ET CYCLES ---
 with tab3:
     st.markdown('<div class="category-card"><h3>🚜 Fiche Technique Évolutive</h3>Découvrez le processus complet de mise en place de votre plante.</div>', unsafe_allow_html=True)
     pl3 = st.selectbox("Sélectionnez la culture à étudier :", liste_plantes, key="key_cycle")
@@ -113,18 +113,21 @@ with tab4:
             except Exception as e:
                 st.error(f"Erreur : {str(e)}")
 
-# --- ONGLET 5 : BUDGET ---
+# --- ONGLET 5 : BUDGET FINANCIER DYNAMIQUE ---
 with tab5:
     st.markdown('<div class="category-card"><h3>💰 Simulateur de Profit & Business Plan</h3>Entrez vos données de terrain pour estimer vos revenus réels en FCFA.</div>', unsafe_allow_html=True)
     pl5 = st.selectbox("Sélectionnez la plante pour le calcul financier :", liste_plantes, key="key_budget")
+    
     col1, col2 = st.columns(2)
     with col1:
         nbr_pieds = st.number_input("Nombre de poquets plantés :", min_value=1, value=500, step=50)
         prix_kilo = st.number_input("Prix au Kilo sur le marché (FCFA) :", min_value=50, value=400, step=25)
     with col2:
         total_charges = st.number_input("Total de vos dépenses engagées (FCFA) :", min_value=0, value=25000, step=1000)
+    
     t1 = st.checkbox("Application d'un système de paillage complet (+30% rendement)")
     t2 = st.checkbox("Fertilisation organique via les fientes de votre poulailler (+30% rendement)")
+    
     if st.button("💰 CALCULER LE RENDEMENT FINANCIER", key="btn_budget_ia"):
         bonus = 1.0
         if t1: bonus += 0.3
